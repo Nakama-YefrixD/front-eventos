@@ -1,8 +1,22 @@
-import React from 'react'
-import Tablacertificados from './Tablacertificados'
-import tableDataComplex from 'views/admin/dataTables/variables/tableDataComplex';
+import React, {useEffect} from 'react'
+import TablaMisCertificados from './TablaMisCertificados';
+import { useSelector, useDispatch } from 'react-redux'
+import {
+    ObtenerMisCertificadosReducer
+} from '../../Redux/Actions/MisCertificados/MisCertificados'
 
 const MisCertificados = () => {
+
+    const dispatch = useDispatch()
+
+    const {
+		rex_lista_mis_certificados
+    } = useSelector(({misCertificados}) => misCertificados)
+
+    useEffect(() => {
+        dispatch(ObtenerMisCertificadosReducer())
+    }, [])
+
     return (
         <div>
             <br/>
@@ -18,7 +32,10 @@ const MisCertificados = () => {
                 Mis Certificados
             </div>
             
-            <Tablacertificados tableData={tableDataComplex} />
+            
+            <TablaMisCertificados 
+                table_data = {rex_lista_mis_certificados}
+            />
             
         </div>
     )

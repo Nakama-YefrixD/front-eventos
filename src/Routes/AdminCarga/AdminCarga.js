@@ -1,12 +1,20 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Card from 'components/card/Card';
 import Dropzone from 'views/admin/profile/components/Dropzone';
 import { Box, Button, Flex, Icon, Text, useColorModeValue } from '@chakra-ui/react';
 import { MdUpload } from 'react-icons/md';
+import {
+    SubirArchivosEstudiantesReducer
+} from '../../Redux/Actions/Administrador/AdminCarga'
+import { useSelector, useDispatch } from 'react-redux'
+import cogoToast from 'cogo-toast';
 
 const AdminCarga = () => {
 
     const brandColor = useColorModeValue('brand.500', 'white');
+    const [fileFlyer, setFileFlyer] = useState(null)
+
+    const dispatch = useDispatch()
 
     return (
         <div>
@@ -39,7 +47,11 @@ const AdminCarga = () => {
                                 <Icon as={MdUpload} w='80px' h='80px' color={brandColor} />
                                 <Flex justify='center' mx='auto' mb='12px'>
                                     <Text fontSize='xl' fontWeight='700' color={brandColor}>
-                                        Selecciona el archivo que deseas subir
+                                        {
+                                            fileFlyer 
+                                            ?fileFlyer.name
+                                            :"Selecciona el archivo que deseas subir"
+                                        }
                                     </Text>
                                 </Flex>
                                 <Text fontSize='sm' fontWeight='500' color='secondaryGray.500'>
@@ -47,6 +59,7 @@ const AdminCarga = () => {
                                 </Text>
                             </Box>
                         }
+                        selectFile ={setFileFlyer}
                     />
                 </div>
 
@@ -57,8 +70,19 @@ const AdminCarga = () => {
                     minW='140px'
                     mt={{ base: '20px', '2xl': 'auto' }}
                     variant='brand'
-                    fontWeight='500'>
-                    Subir Archivo
+                    fontWeight='500'
+                    onClick={async () => {
+                        await dispatch(SubirArchivosEstudiantesReducer(fileFlyer))
+                        cogoToast.success(
+                            'Los estudiantes fueron cargados correctamente',
+                            {
+                                position: 'top-right',
+                                heading: 'Carga Estudiantes'
+                            },
+                        );
+                    }}
+                >
+                    Subir Archivos
                 </Button>
 
             </Card>

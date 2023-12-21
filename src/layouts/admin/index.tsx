@@ -8,10 +8,13 @@ import { SidebarContext } from 'contexts/SidebarContext';
 import { useState } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import routes from 'routes';
+import routesponente from 'routesponente';
+import routesestudiantes from 'routesestudiantes';
 
 // Custom Chakra theme
-export default function Dashboard(props: { [x: string]: any }) {
+export default function Dashboard(props: { [x: string]: any, rex_usuario_seleccionado: any }) {
 	const { ...rest } = props;
+	const { rex_usuario_seleccionado } = props;
 	// states and functions
 	const [ fixed ] = useState(false);
 	const [ toggleSidebar, setToggleSidebar ] = useState(false);
@@ -64,7 +67,16 @@ export default function Dashboard(props: { [x: string]: any }) {
 					toggleSidebar,
 					setToggleSidebar
 				}}>
-				<Sidebar routes={routes} display='none' {...rest} />
+				<Sidebar 
+					routes={
+						rex_usuario_seleccionado?.tpuid == 1
+						?routes
+						:rex_usuario_seleccionado?.tpuid == 2
+							?routesestudiantes
+							:routesponente
+					} 
+					display='none' {...rest} 
+				/>
 				<Box
 					float='right'
 					minHeight='100vh'
@@ -95,7 +107,13 @@ export default function Dashboard(props: { [x: string]: any }) {
 					{getRoute() ? (
 						<Box mx='auto' p={{ base: '20px', md: '30px' }} pe='20px' minH='100vh' pt='50px'>
 							<Switch>
-								{getRoutes(routes)}
+								{
+									rex_usuario_seleccionado?.tpuid == 1
+									?getRoutes(routes)
+									:rex_usuario_seleccionado?.tpuid == 2
+										?getRoutes(routesestudiantes)
+										:getRoutes(routesponente)
+								}
 								<Redirect from='/' to='/admin/default' />
 							</Switch>
 						</Box>

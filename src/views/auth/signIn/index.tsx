@@ -15,8 +15,9 @@ import {
   InputGroup,
   InputRightElement,
   Text,
-  useColorModeValue,
+  useColorModeValue
 } from "@chakra-ui/react";
+
 // Custom components
 import { HSeparator } from "components/separator/Separator";
 import DefaultAuth from "layouts/auth/Default";
@@ -25,6 +26,8 @@ import illustration from "assets/img/auth/auth.png";
 import { FcGoogle } from "react-icons/fc";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { RiEyeCloseLine } from "react-icons/ri";
+import ModalRecuperar from "./ModalRecuperar";
+import BotonIngresar from "./BotonIngresar";
 
 function SignIn() {
   const history = useHistory();
@@ -45,6 +48,9 @@ function SignIn() {
     { bg: "whiteAlpha.200" }
   );
   const [show, setShow] = React.useState(false);
+  const [showModalRecuperar, setShowModalRecuperar] = React.useState(false);
+  const [txtEmail, setTxtEmail] = React.useState("");
+  const [txtContrasenia, setTxtContrasenia] = React.useState("");
   const handleClick = () => setShow(!show);
   return (
     <DefaultAuth illustrationBackground={illustration} image={illustration}>
@@ -94,15 +100,18 @@ function SignIn() {
               Email<Text color={brandStars}>*</Text>
             </FormLabel>
             <Input
-              isRequired={true}
-              variant='auth'
-              fontSize='sm'
-              ms={{ base: "0px", md: "0px" }}
-              type='email'
-              placeholder='mail@gmail.com'
-              mb='24px'
-              fontWeight='500'
-              size='lg'
+                isRequired={true}
+                variant='auth'
+                fontSize='sm'
+                ms={{ base: "0px", md: "0px" }}
+                type='email'
+                placeholder='mail@gmail.com'
+                mb='24px'
+                fontWeight='500'
+                size='lg'
+                onChange={(e) => {
+                  setTxtEmail(e.target.value)
+                }}
             />
             <FormLabel
               ms='4px'
@@ -114,13 +123,16 @@ function SignIn() {
             </FormLabel>
             <InputGroup size='md'>
               <Input
-                isRequired={true}
-                fontSize='sm'
-                placeholder='Min. 8 caracteres'
-                mb='24px'
-                size='lg'
-                type={show ? "text" : "password"}
-                variant='auth'
+                  isRequired={true}
+                  fontSize='sm'
+                  placeholder='Min. 8 caracteres'
+                  mb='24px'
+                  size='lg'
+                  type={show ? "text" : "password"}
+                  variant='auth'
+                  onChange={(e) => {
+                    setTxtContrasenia(e.target.value)
+                  }}
               />
               <InputRightElement display='flex' alignItems='center' mt='4px'>
                 <Icon
@@ -132,32 +144,35 @@ function SignIn() {
               </InputRightElement>
             </InputGroup>
             <Flex justifyContent='space-between' align='center' mb='24px'>
-              <NavLink to='/auth/forgot-password'>
-                <Text
-                  color={textColorBrand}
-                  fontSize='sm'
-                  w='150px'
-                  fontWeight='500'>
-                  Recuperar contraseña
-                </Text>
-              </NavLink>
+              <Text
+                color={textColorBrand}
+                fontSize='sm'
+                w='150px'
+                fontWeight='500'
+                onClick={() => {
+                  setShowModalRecuperar(!showModalRecuperar)
+                }}
+                style={{
+                  cursor: 'pointer'
+                }}
+              >
+                Recuperar contraseña
+              </Text>
             </Flex>
-            <Button
-              fontSize='sm'
-              variant='brand'
-              fontWeight='500'
-              w='100%'
-              h='50'
-              mb='24px'
-              onClick={() => {
-                history.push('/otros/home');
-              }}
-            >
-              Iniciar Sesión
-            </Button>
+            <BotonIngresar 
+              email = {txtEmail}
+              contrasenia = {txtContrasenia}
+            />
           </FormControl>
+          <ModalRecuperar 
+            setShowModal = {setShowModalRecuperar}
+            showModal = {showModalRecuperar}
+          />
         </Flex>
       </Flex>
+
+      
+
     </DefaultAuth>
   );
 }

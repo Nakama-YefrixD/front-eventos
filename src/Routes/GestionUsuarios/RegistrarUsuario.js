@@ -389,8 +389,9 @@ const RegistrarUsuario = () => {
                                 setIn_tipousuario(e.target.value)
                             }}
                         >
-                            <option value="1">Interno</option>
+                            <option value="1">Admin</option>
                             <option value="2">Estudiante</option>
+                            <option value="3">Ponente</option>
                         </Select>
                         </div>
                     </div>

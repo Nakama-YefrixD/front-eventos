@@ -52,7 +52,7 @@ const GestionUsuarios = () => {
         setShowTableUsuarios(false)
         setTimeout(() => {
             setShowTableUsuarios(true)
-        }, 2000)
+        }, 500)
         return rpta
     }
 

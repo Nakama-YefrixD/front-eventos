@@ -1,4 +1,12 @@
-import { Box, Flex, Icon, Progress, Table, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue } from '@chakra-ui/react';
+import { 
+	Box, Flex, Icon, Progress, 
+	Table, Tbody, Td, Text, Th, Thead, Tr, 
+	Input,
+	Button,
+	HStack,
+	VStack,
+	useColorModeValue 
+} from '@chakra-ui/react';
 import {
 	createColumnHelper,
 	flexRender,
@@ -32,7 +40,7 @@ export default function Tablaevdi(props: { tableData: any }) {
 	let defaultData = tableData;
 	const columns = [
 		columnHelper.accessor('name', {
-			id: 'nombreevento',
+			id: 'name',
 			header: () => (
 				<Text
 					justifyContent='space-between'
@@ -45,7 +53,7 @@ export default function Tablaevdi(props: { tableData: any }) {
 			cell: (info: any) => (
 				<Flex align='center'>
 					<Flex align='center'>
-						texto
+						{info.getValue()}
 					</Flex>
 				</Flex>
 			)
@@ -185,9 +193,64 @@ export default function Tablaevdi(props: { tableData: any }) {
 		getSortedRowModel: getSortedRowModel(),
 		debugTable: true
 	});
+
+	// PAGINATE
+	const [currentPage, setCurrentPage] = React.useState(1);
+	const [itemsPerPage, setItemsPerPage] = React.useState(5);
+	const [searchTerm, setSearchTerm] = React.useState('');
+  
+	const handlePageChange = (pageNumber: any) => {
+	  setCurrentPage(pageNumber);
+	};
+  
+	const handleItemsPerPageChange = (event: any) => {
+	  setItemsPerPage(Number(event.target.value));
+	  setCurrentPage(1); // Reseteamos a la primera página cuando cambia el número de elementos por página
+	};
+  
+	const handleSearchChange = (event: any) => {
+	  setSearchTerm(event.target.value);
+	  setCurrentPage(1); // Reseteamos a la primera página cuando cambia el término de búsqueda
+	};
+  
+	const filteredData = data.filter((item) =>
+	  item.name.toLowerCase().includes(searchTerm.toLowerCase())
+	);
+  
+	const indexOfLastItem = currentPage * itemsPerPage;
+	const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+	const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+
 	return (
 		<Card flexDirection='column' w='100%' px='0px' overflowX={{ sm: 'scroll', lg: 'hidden' }}>
 			<Box>
+
+				<HStack>
+					<Button
+					disabled={currentPage === 1}
+					onClick={() => handlePageChange(currentPage - 1)}
+					>
+					Anterior
+					</Button>
+					<Button
+					disabled={indexOfLastItem >= filteredData.length}
+					onClick={() => handlePageChange(currentPage + 1)}
+					>
+					Siguiente
+					</Button>
+					<span>
+					Página {currentPage} de {Math.ceil(filteredData.length / itemsPerPage)}
+					</span>
+					<Input
+					type="number"
+					min="1"
+					value={itemsPerPage}
+					onChange={handleItemsPerPageChange}
+					w="80px"
+					/>
+					<span>elementos por página</span>
+				</HStack>
+
 				<Table variant='simple' color='gray.500' mb='24px' mt="12px">
 					<Thead>
 						{table.getHeaderGroups().map((headerGroup) => (

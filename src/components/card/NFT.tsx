@@ -5,18 +5,22 @@ import Card from 'components/card/Card';
 // Assets
 import { useState } from 'react';
 import { IoHeart, IoHeartOutline } from 'react-icons/io5';
+import config from '../../config'
 
 export default function NFT(props: {
 	image: string;
 	name: string;
 	author: string;
 	carrera: string;
+	linkflyer: string;
 	bidders: string[];
 	download: string;
 	currentbid: string | number;
 	showIcon: boolean;
 }) {
-	const { image, name, author, carrera, bidders, download, currentbid, showIcon } = props;
+	
+	const { image, name, author, carrera, linkflyer, bidders, download, currentbid, showIcon } = props;
+
 	const [ like, setLike ] = useState(true);
 	const textColor = useColorModeValue('navy.700', 'white');
 	const textColorBid = useColorModeValue('brand.500', 'white');
@@ -24,12 +28,22 @@ export default function NFT(props: {
 		<Card p='20px'>
 			<Flex direction={{ base: 'column' }} justify='center'>
 				<Box mb={{ base: '20px', '2xl': '20px' }} position='relative'>
-					<Image
+					{/* <Image
 						src={image}
 						w={{ base: '100%', '3xl': '100%' }}
 						h={{ base: '100%', '3xl': '100%' }}
 						borderRadius='20px'
-					/>
+					/> */}
+					<iframe
+						src={config.api_public+linkflyer}
+						// 'http://localhost:8003/public/mostrar-flyter-evento/evento1.pdf'
+						style={{
+							width:'100%',
+							height:'180px'
+						}}
+					>
+
+					</iframe>
 					{
 						showIcon == true
 						?<Button

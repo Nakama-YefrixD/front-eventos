@@ -1,9 +1,24 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { CalendarEventosInscritos } from './CalendarEventosInscritos'
 import Card from 'components/card/Card';
 import CalenEventoInscritos from './CalenEventoInscritos';
+import { useSelector, useDispatch } from 'react-redux'
+import {
+    ObtenerEventosInscritosReducer
+} from '../../Redux/Actions/EventosInscritos/EventosInscritos'
 
 const EventosInscrito = () => {
+
+    const dispatch = useDispatch()
+
+    const {
+		rex_lista_eventos_inscritos
+    } = useSelector(({eventosInscritos}) => eventosInscritos)
+
+    useEffect(() => {
+        dispatch(ObtenerEventosInscritosReducer())
+    }, [])
+
     return (
         <div>
             <br/>
@@ -20,7 +35,9 @@ const EventosInscrito = () => {
             </div>
             
             <Card>
-                <CalendarEventosInscritos />
+                <CalendarEventosInscritos 
+                    eventos = {rex_lista_eventos_inscritos}
+                />
                 {/* <CalenEventoInscritos /> */}
             </Card>
 

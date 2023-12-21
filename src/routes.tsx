@@ -17,6 +17,7 @@ import RTL from 'views/admin/rtl';
 
 // Auth Imports
 import SignInCentered from 'views/auth/signIn';
+import Recuperar from 'Routes/Recuperar/Recuperar';
 
 const routes = [
 	{
@@ -42,19 +43,28 @@ const routes = [
 		component: DataTables
 	},
 	{
-		name: 'Mis Certificados',
+		name: 'Certificados',
 		layout: '/otros',
+		// path: '/admin-mis-certificados',
 		path: '/mis-certificados',
 		icon: <Icon as={MdDocumentScanner} width='20px' height='20px' color='inherit' />,
 		component: Profile
 	},
-	{
-		name: 'Login',
-		layout: '/auth',
-		path: '/sign-in/default',
-		icon: <Icon as={MdLock} width='20px' height='20px' color='inherit' />,
-		component: SignInCentered
-	},
+	// {
+	// 	name: 'Login',
+	// 	layout: '/auth',
+	// 	path: '/sign-in/default',
+	// 	icon: <Icon as={MdLock} width='20px' height='20px' color='inherit' />,
+	// 	component: SignInCentered
+	// },
+
+	// {
+	// 	name: 'Recuperar',
+	// 	layout: '/auth',
+	// 	path: '/recuperar/:urltoken',
+	// 	icon: <Icon as={MdLock} width='20px' height='20px' color='inherit' />,
+	// 	component: Recuperar
+	// },
 
 	{
 		name: 'Mis Horas Extracurriculares',
@@ -65,7 +75,7 @@ const routes = [
 	},
 
 	{
-		name: 'Eventos Realizados',
+		name: 'Asistencia',
 		layout: '/otros',
 		path: '/eventos-realizados',
 		icon: <Icon as={MdOutlineEventAvailable} width='20px' height='20px' color='inherit' />,
@@ -104,6 +114,14 @@ const routes = [
 		name: 'Carga Masiva',
 		layout: '/otros',
 		path: '/admin-carga',
+		icon: <Icon as={MdOutlineUploadFile} width='20px' height='20px' color='inherit' />,
+		component: MainDashboard
+	},
+
+	{
+		name: 'Carga Asistencias',
+		layout: '/otros',
+		path: '/carga-asistencias',
 		icon: <Icon as={MdOutlineUploadFile} width='20px' height='20px' color='inherit' />,
 		component: MainDashboard
 	},

@@ -29,6 +29,7 @@ import { useHistory } from "react-router-dom";
 import { useSelector } from 'react-redux'
 
 type RowObj = {
+	usucodigo_ucs: string;
 	usuid: number;
 	usunombre: string;
 	usuusuario: string;
@@ -58,8 +59,29 @@ export default function TablaGestionUsuarios(props: { tableData: any, lista_data
 
 	let defaultData = tableData;
 	const columns = [
+		columnHelper.accessor('usucodigo_ucs', {
+			id: 'usucodigo_ucs',
+			header: () => (
+				<Text
+					justifyContent='space-between'
+					align='center'
+					fontSize={{ sm: '10px', lg: '12px' }}
+					color='gray.400'>
+					Codigo
+				</Text>
+			),
+			cell: (info: any) => (
+				<Flex align='center'>
+					{/* <Text color={textColor} fontSize='sm' fontWeight='700'> */}
+					<Text >
+						{info.getValue()}
+						{/* Texto */}
+					</Text>
+				</Flex>
+			)
+		}),
 		columnHelper.accessor('usunombre', {
-			id: 'nombreevento',
+			id: 'usunombre',
 			header: () => (
 				<Text
 					justifyContent='space-between'

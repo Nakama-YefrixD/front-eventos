@@ -3,6 +3,7 @@
 import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Flex, Link, Text, useColorModeValue } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import AdminNavbarLinks from 'components/navbar/NavbarLinksAdmin';
+import Top from './Top';
 
 export default function AdminNavbar(props: {
 	secondary: boolean;
@@ -94,7 +95,7 @@ export default function AdminNavbar(props: {
 				}}
 				alignItems={{ xl: 'center' }}
 				mb={gap}>
-				
+				<Top />
 			</Flex> 
 		</Box>
 	);

@@ -1,8 +1,22 @@
-import React from 'react'
-import TablaEventosRealizados from './TablaEventosRealizados'
-import tableDataComplex from 'views/admin/dataTables/variables/tableDataComplex';
+import React, {useEffect} from 'react'
+import TabEventosRealizados from './TabEventosRealizados';
+import { useSelector, useDispatch } from 'react-redux'
+import {
+    ObtenerEventosRealizadosReducer
+} from '../../Redux/Actions/EventosRealizados/EventosRealizados'
 
 const EventosRealizados = () => {
+
+    const dispatch = useDispatch()
+
+    const {
+		rex_lista_eventos_realizados
+    } = useSelector(({eventosRealizados}) => eventosRealizados)
+
+    useEffect(() => {
+        dispatch(ObtenerEventosRealizadosReducer())
+    }, [])
+
     return (
         <div>
             <br/>
@@ -18,7 +32,9 @@ const EventosRealizados = () => {
                 Eventos Realizados
             </div>
 
-            <TablaEventosRealizados tableData={tableDataComplex} />
+            <TabEventosRealizados 
+                table_data = {rex_lista_eventos_realizados}
+            />
         </div>
 
     )

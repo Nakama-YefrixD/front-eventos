@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import TablaGestionCarreras from './TablaGestionCarreras'
 import tableDataComplex from 'views/admin/dataTables/variables/tableDataComplex';
 import Card from 'components/card/Card';
@@ -16,13 +16,77 @@ import {
     ModalFooter,
     Button
 } from '@chakra-ui/react';
-
+import { useSelector, useDispatch } from 'react-redux'
+import {
+    CrearCarreraReducer,
+    EliminarCarreraReducer,
+    ObtenerGestionCarrerasReducer,
+    
+} from '../../Redux/Actions/Administrador/GestionCarreras'
+import RegistrarCarrera from './RegistrarCarrera';
+import cogoToast from 'cogo-toast';
 
 const GestionCarreras = () => {
 
     const history = useHistory();
-
     const [showModalCrearCarrera, setShowModalCrearCarrera] = useState(false)
+    const [showTableCarreras, setShowTableCarreras] = useState(true)
+    const [loadingCarrera, setLoadingCarrera] = useState(false)
+    
+    const dispatch = useDispatch()
+    
+    const {
+		rex_lista_gestion_carreras
+    } = useSelector(({adminGestionCarreras}) => adminGestionCarreras)
+
+    useEffect(() => {
+        dispatch(ObtenerGestionCarrerasReducer())
+    }, [])
+
+    const EliminarCarrera = async (id) => {
+        const rpta = await dispatch(EliminarCarreraReducer(id))
+        
+        if(rpta.respuesta){
+            cogoToast.success(
+                rpta.mensaje,
+                {
+                    position: 'top-right',
+                    heading: 'Carrera Eliminada'
+                },
+            );
+            setShowTableCarreras(false)
+        }else{
+
+        }
+        setTimeout(() => {
+            setShowTableCarreras(true)
+        }, 500)
+        return rpta
+    }
+
+    const CrearCarrera = async (nombre) => {
+        setLoadingCarrera(true)
+        const rpta = await dispatch(CrearCarreraReducer(nombre))
+        setLoadingCarrera(false)
+        if(rpta.respuesta){
+            cogoToast.success(
+                rpta.mensaje,
+                {
+                    position: 'top-right',
+                    heading: 'Carrera Creada'
+                },
+            );
+            setShowModalCrearCarrera(false)
+        }else{
+
+        }
+        
+        setShowTableCarreras(false)
+        setTimeout(() => {
+            setShowTableCarreras(true)
+        }, 500)
+        return rpta
+    }
 
     return (
         <div>
@@ -36,7 +100,7 @@ const GestionCarreras = () => {
                     marginBottom:'15px'
                 }}
             >
-                Gestion de Eventos
+                Gestion de Carreras
             </div>
 
 
@@ -54,9 +118,9 @@ const GestionCarreras = () => {
                             alignSelf: 'center'
                         }}
                     >
-                        <input 
+                        <Input 
                             style={{
-                                border: '2px solid #0C0F59',
+                                border: '1px solid #0C0F59',
                                 borderRadius: '8px',
                                 paddingLeft:'5px',
                                 width: '250px'
@@ -93,36 +157,23 @@ const GestionCarreras = () => {
                     </div>
                 </div>
             </Card>
-
-            <TablaGestionCarreras tableData={tableDataComplex} />
             
-
-
-            <Modal
-                isOpen={showModalCrearCarrera}
-                onClose={() => {
-                    setShowModalCrearCarrera(!showModalCrearCarrera)
-                }}
-            >
-                <ModalOverlay />
-                <ModalContent>
-                <ModalHeader>Crea un carrera</ModalHeader>
-                <ModalCloseButton />
-                <ModalBody pb={6}>
-                    <FormControl>
-                        <FormLabel>Nombre de la carrera</FormLabel>
-                        <Input placeholder='Nombre de la carrera' />
-                    </FormControl>
-                </ModalBody>
-
-                <ModalFooter>
-                    <Button colorScheme='blue' mr={3}>
-                        Guardar
-                    </Button>
-                    <Button onClick={() => {}}>Cancelar</Button>
-                </ModalFooter>
-                </ModalContent>
-            </Modal>
+            {
+                rex_lista_gestion_carreras.length > 0 && showTableCarreras
+                ?<TablaGestionCarreras 
+                    tableData={rex_lista_gestion_carreras}
+                    lista_data = {rex_lista_gestion_carreras}
+                    eliminarCarrera = {EliminarCarrera}
+                />
+                :null
+            }
+            
+            <RegistrarCarrera 
+                mostrarModal = {showModalCrearCarrera}
+                setMostrarModal = {setShowModalCrearCarrera}
+                funCrear = {CrearCarrera}
+                loading = {loadingCarrera}
+            />
 
         </div>
     )

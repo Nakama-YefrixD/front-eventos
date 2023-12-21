@@ -5,7 +5,6 @@ import Card from 'components/card/Card';
 
 import { Calendar } from '@fullcalendar/core'
 import timeGridPlugin from '@fullcalendar/timegrid'
-
 import { 
     Modal,
     ModalContent,
@@ -48,19 +47,19 @@ const CrearEvento = () => {
         >
             <Card
                 onClick={() => {
-                    setMostrarModal(true)
+                    // setMostrarModal(true)
                 }}  
             >
                 <FullCalendar
                     locale={'es'}
-                    plugins={[timeGridPlugin]}
+                    plugins={[timeGridPlugin, dayGridPlugin]}
                     initialView="timeGridWeek" // Muestra la vista de TimeGrid para una semana
                     events={[
                         // Eventos de ejemplo
                         {
                             title: 'Evento 1',
-                            start: '2023-05-17T10:00:00',
-                            end: '2023-05-17T12:00:00',
+                            start: '2023-06-06T10:00:00',
+                            end: '2023-06-07T12:00:00',
                         },
                         {
                             title: 'Evento 2',
@@ -68,6 +67,12 @@ const CrearEvento = () => {
                             end: '2023-05-18T16:00:00',
                         },
                     ]}
+                    dateClick={() => {
+                        console.log("click");
+                    }}
+                    eventClick={() => {
+                        console.log("otro");
+                    }}
                     
                 />
             </Card>

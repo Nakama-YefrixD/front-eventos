@@ -1,21 +1,22 @@
-import React from 'react'
-import Card from 'components/card/Card';
-import { Box, Flex, Icon, Progress, Table, Tbody, Td, Text, Th, Thead, Tr, useColorModeValue } from '@chakra-ui/react';
-import {
-	createColumnHelper,
-	flexRender,
-	getCoreRowModel,
-	getSortedRowModel,
-	SortingState,
-	useReactTable
-} from '@tanstack/react-table';
-import { MdCancel, MdCheckCircle, MdOutlineError } from 'react-icons/md';
+import React, {useEffect} from 'react'
 import Tablaevdi from './Tablaevdi';
 import tableDataComplex from 'views/admin/dataTables/variables/tableDataComplex';
-
+import TablaEventDisp from './TablaEventDisp';
+import { useSelector, useDispatch } from 'react-redux'
+import { ObtenerEventosDisponiblesReducer } from 'Redux/Actions/EventosDisponibles/EventosDisponibles';
 
 const EventosDisponibles = () => {
     
+    const dispatch = useDispatch()
+
+    const {
+		rex_lista_eventos_disponibles
+    } = useSelector(({eventosDisponibles}) => eventosDisponibles)
+
+    useEffect(() => {
+        dispatch(ObtenerEventosDisponiblesReducer())
+    }, [])
+
     return (
         <div>
             <br/>
@@ -30,8 +31,12 @@ const EventosDisponibles = () => {
             >
                 Eventos Disponibles
             </div>
+            
+            <TablaEventDisp 
+                table_data={rex_lista_eventos_disponibles}
+            />
 
-            <Tablaevdi tableData={tableDataComplex} />
+            {/* <Tablaevdi tableData={tableDataComplex} /> */}
         </div>
     )
 }

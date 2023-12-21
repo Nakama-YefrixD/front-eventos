@@ -105,6 +105,7 @@ export default function Marketplace() {
 								name='Nombre del Evento'
 								author='Nombre del Ponente'
 								carrera='Ing Civil'
+								linkflyer={ '-' }
 								bidders={[ Avatar1, Avatar2, Avatar3, Avatar4, Avatar1, Avatar1, Avatar1, Avatar1 ]}
 								image={Nft1}
 								currentbid='24 de Abril 2023'
@@ -115,6 +116,7 @@ export default function Marketplace() {
 								name='Nombre del Evento'
 								author='Nombre del Ponente'
 								carrera='Ing Civil'
+								linkflyer={ '-' }
 								bidders={[ Avatar1, Avatar2, Avatar3, Avatar4, Avatar1, Avatar1, Avatar1, Avatar1 ]}
 								image={Nft2}
 								currentbid='24 de Abril 2023'
@@ -125,6 +127,7 @@ export default function Marketplace() {
 								name='Nombre del Evento'
 								author='Nombre del Ponente'
 								carrera='Ing Civil'
+								linkflyer={ '-' }
 								bidders={[ Avatar1, Avatar2, Avatar3, Avatar4, Avatar1, Avatar1, Avatar1, Avatar1 ]}
 								image={Nft3}
 								currentbid='24 de Abril 2023'
@@ -140,6 +143,7 @@ export default function Marketplace() {
 								name='Swipe Circles'
 								author='By Peter Will'
 								carrera='Ing Civil'
+								linkflyer={ '-' }
 								bidders={[ Avatar1, Avatar2, Avatar3, Avatar4, Avatar1, Avatar1, Avatar1, Avatar1 ]}
 								image={Nft4}
 								currentbid='24 de Abril 2023'
@@ -149,6 +153,7 @@ export default function Marketplace() {
 							<NFT
 								name='Colorful Heaven'
 								carrera='Ing Civil'
+								linkflyer={ '-' }
 								author='By Mark Benjamin'
 								bidders={[ Avatar1, Avatar2, Avatar3, Avatar4, Avatar1, Avatar1, Avatar1, Avatar1 ]}
 								image={Nft5}
@@ -159,6 +164,7 @@ export default function Marketplace() {
 							<NFT
 								name='3D Cubes Art'
 								carrera='Ing Civil'
+								linkflyer={ '-' }
 								author='By Manny Gates'
 								bidders={[ Avatar1, Avatar2, Avatar3, Avatar4, Avatar1, Avatar1, Avatar1, Avatar1 ]}
 								image={Nft6}

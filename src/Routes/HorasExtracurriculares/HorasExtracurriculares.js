@@ -1,12 +1,27 @@
-import React from 'react'
-import TablaHoraExtra from './TablaHoraExtra'
-import tableDataComplex from 'views/admin/dataTables/variables/tableDataComplex';
+import React, {useEffect} from 'react'
 import MiniStatistics from 'components/card/MiniStatistics';
 import IconBox from 'components/icons/IconBox';
 import { Icon, SimpleGrid } from '@chakra-ui/react';
 import { MdAddTask } from 'react-icons/md';
+import TablaMisHorasExtracurriculares from './TablaMisHorasExtracurriculares';
+import { useSelector, useDispatch } from 'react-redux'
+import {
+    ObtenerMisHrsExtracurricularesReducer
+} from '../../Redux/Actions/HorasExtracurriculares/HorasExtracurriculares'
 
 const HorasExtracurriculares = () => {
+
+    const dispatch = useDispatch()
+
+    const {
+		rex_lista_mis_hrs_extracurriculares,
+        rex_cnt_hrs_extracurriculares
+    } = useSelector(({horasExtracurriculares}) => horasExtracurriculares)
+
+    useEffect(() => {
+        dispatch(ObtenerMisHrsExtracurricularesReducer())
+    }, [])
+
     return (
         <div>
             <br/>
@@ -34,12 +49,15 @@ const HorasExtracurriculares = () => {
                             />
                         }
                         name='Horas Acumuladas'
-                        value='154'
+                        value={rex_cnt_hrs_extracurriculares}
                     />
                 </div>
                 <div></div>
             </SimpleGrid>
-            <TablaHoraExtra tableData={tableDataComplex} />
+            {/* <TablaHoraExtra tableData={tableDataComplex} /> */}
+            <TablaMisHorasExtracurriculares 
+                table_data = {rex_lista_mis_hrs_extracurriculares}
+            />
             
         </div>
     )
