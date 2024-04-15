@@ -9,6 +9,7 @@ import {
     InscribirUsuarioEventoReducer
 } from '../../Redux/Actions/EventosInscritos/EventosInscritos'
 import cogoToast from 'cogo-toast';
+import config from '../../config'
 
 const TablaEventDisp = (props) => {
 
@@ -27,6 +28,7 @@ const TablaEventDisp = (props) => {
     const [mostrarModalHorario, setMostrarModalHorario] = useState(false);
 
     const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
+    const [mostrarFlyer, setMostrarFlyer] = useState(false);
 
     const [loadingInscribirme, setLoadingInscribirme] = useState(false);
     const [mostrarTabla, setMostrarTabla] = useState(true);
@@ -158,6 +160,9 @@ const TablaEventDisp = (props) => {
             render: (info) => (
                 <div
                     onClick={() => {
+                        setMostrarFlyer(!mostrarFlyer)
+                        setEventoSeleccionado(info)
+                        console.log(info);
                     }}
                     style={{
                         cursor: 'pointer',
@@ -276,9 +281,39 @@ const TablaEventDisp = (props) => {
                     >
                       Aceptar
                     </Button>
-                  ]}
+                ]}
             >
                 <p>¿Estás seguro de inscribirte a este evento?</p>
+            </Modal>
+
+            <Modal
+                title="Flyer"
+                visible={mostrarFlyer}
+                width={"85%"}
+                style={{ top: 20 }}
+                footer={[
+                    <Button 
+                        key="back" 
+                        onClick={() => {
+                            setMostrarFlyer(!mostrarFlyer)
+                        }}
+                    >
+                        Cancelar
+                    </Button>
+                ]}
+                onCancel={() => setMostrarFlyer(!mostrarFlyer)}
+            >
+                <iframe
+                    src={config.api_public+eventoSeleccionado.linkflyer}
+                    // src={"http://192.168.100.16:8003/public//mostrar-flyter-evento/evento1-fFa6C.pdf"}
+                    style={{
+                        width:'100%',
+                        height:'570px'
+                    }}
+                >
+
+                </iframe>
+
             </Modal>
 
         </div>

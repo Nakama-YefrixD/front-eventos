@@ -26,6 +26,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import ModalCrearEvento from './ModalCrearEvento';
 import ModalTablaHorarios from './ModalTablaHorarios';
 import ModalTablaPonentes from './ModalTablaPonentes';
+import TablaEventos from './TablaEventos';
 
 const GestionEventos = () => {
 
@@ -57,15 +58,12 @@ const GestionEventos = () => {
 
     const EliminarEvento = async (idevento) => {
         const rpta = await dispatch(EliminarEventoReducer(idevento))
-        setShowTableEventos(false)
-        setTimeout(() => {
-            setShowTableEventos(true)
-        }, 500)
+ 
         return rpta
     }
 
-    const AgregarEvento = async (evento, fileFlyer) => {
-        const rpta = await dispatch(AgregarEventoReducer(evento, fileFlyer))
+    const AgregarEvento = async (evento, fileFlyer, fileCertificado) => {
+        const rpta = await dispatch(AgregarEventoReducer(evento, fileFlyer, fileCertificado))
         setShowTableEventos(false)
         setTimeout(() => {
             setShowTableEventos(true)
@@ -88,31 +86,17 @@ const GestionEventos = () => {
             >
                 Gestion de Eventos
             </div>
-            <Card 
-                style={{marginBottom:'20px'}}
+            <div 
+                style={{
+                    marginBottom:'20px'
+                }}
             >
                 <div
                     style={{
                         display:'flex'
                     }}
                 >
-                    <div
-                        style={{
-                            width:'35%',
-                            alignSelf: 'center'
-                        }}
-                    >
-                        <Input 
-                            style={{
-                                border: '1px solid #0C0F59',
-                                borderRadius: '8px',
-                                paddingLeft:'5px',
-                                width: '250px'
-                            }}
-                            placeholder='Buscar' 
-                        />
-                    </div>
-                    <div
+                    {/* <div
                         style={{
                             display:'flex',
                             width:'30%'
@@ -123,7 +107,8 @@ const GestionEventos = () => {
                             justifyContent='space-between'
                             alignItems='center'
                             w='100%'
-                            mb='8px'>
+                            mb='8px'
+                        >
                             <Input
                                 placeholder="Fecha"
                                 size="md"
@@ -189,7 +174,7 @@ const GestionEventos = () => {
                                 Buscar
                             </div>
                         </Flex>
-                    </div>
+                    </div> */}
                     <div
                         style={{
                             width:'35%',
@@ -206,9 +191,7 @@ const GestionEventos = () => {
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                cursor:'pointer',
-                                right: '0',
-                                position: 'absolute'
+                                cursor:'pointer'
                             }}
                             onClick={() => {
                                 // history.push('/otros/crear-eventos');
@@ -219,9 +202,26 @@ const GestionEventos = () => {
                         </div>
                     </div>
                 </div>
-            </Card>
+            </div>
             
-            {
+            <TablaEventos 
+                table_data = {rex_lista_gestion_eventos}
+                
+                editarEvento = {(e) => {
+                    EditarEvento(e)
+                }}
+                eliminarEvento = {async (idevento) => {
+                    return await EliminarEvento(idevento)
+                }}
+                setMostrarFechas = {setMostrarModalHorario}
+                mostrarFechas = {mostrarModalHorario}
+                setEventoSeleccionado = {setEventoSeleccionado}
+                eventoSeleccionado  = {eventoSeleccionado}
+                setmostrarModalPonente = {setMostrarModalPonente}
+                mostrarModalPonente = {mostrarModalPonente}
+            />
+
+            {/* {
                 rex_lista_gestion_eventos.length > 0 && showTableEventos
                 ? <TablaGestionEventos 
                     tableData={tableDataComplex}
@@ -239,18 +239,17 @@ const GestionEventos = () => {
                     mostrarModalPonente = {mostrarModalPonente}
                 />
                 : null
+            } */}
+
+            {
+                mostrarModal
+                ?<ModalCrearEvento 
+                    mostrarModal = {mostrarModal}
+                    setMostrarModal = {setMostrarModal}
+                    agregarEvento = {AgregarEvento}
+                />
+                :null
             }
-
-
-            {/* 
-                
-            */}
-
-            <ModalCrearEvento 
-                mostrarModal = {mostrarModal}
-                setMostrarModal = {setMostrarModal}
-                agregarEvento = {AgregarEvento}
-            />
 
             {
                 mostrarModalHorario == true

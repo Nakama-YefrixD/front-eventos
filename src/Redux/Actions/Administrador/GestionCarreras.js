@@ -103,6 +103,19 @@ export const EditarCarreraReducer = (id, nombre) => async ( dispatch ) => {
     return dat_registrar
 }
 
+export const EditarInputCamposCarreraReducer = (id, nombre) => (dispatch, getState) => {
+
+    let rex_lista_gestion_carreras = getState().adminGestionCarreras.rex_lista_gestion_carreras
+
+    rex_lista_gestion_carreras.find(gc => gc.id == id).nombreEditado = nombre
+
+    dispatch({
+        type: OBTENER_LISTA_GESTION_CARRERAS,
+        payload : rex_lista_gestion_carreras
+    })
+
+}
+
 export const CrearCarreraReducer = (nombre) => async ( dispatch ) => {
 
     let dat_registrar = {}

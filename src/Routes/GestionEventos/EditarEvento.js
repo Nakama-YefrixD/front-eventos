@@ -37,7 +37,7 @@ import {
 import Selects from 'react-select'
 import cogoToast from 'cogo-toast';
 
-const ModalCrearEvento = (props) => {
+const EditarEvento = (props) => {
 
     const dispatch = useDispatch()
     const {
@@ -48,9 +48,13 @@ const ModalCrearEvento = (props) => {
         rex_lista_completa_ponentes_eventos
     } = useSelector(({adminGestionEventos}) => adminGestionEventos)
 
-    const mostrarModal = props.mostrarModal
-    const setMostrarModal = props.setMostrarModal
-    const agregarEvento = props.agregarEvento
+    const {
+        mostrarModal,
+        setMostrarModal,
+        funEditarEvento,
+        eventoSeleccionado,
+        setEventoSeleccionado
+    } = props
 
     // const [mostrarModal, setMostrarModal] = useState(false)
     const brandColor = useColorModeValue('brand.500', 'white');
@@ -70,7 +74,6 @@ const ModalCrearEvento = (props) => {
     const [tipoEvento, setTipoEvento] = useState("")
     const [organizacion, setOrganizacion] = useState("")
     const [linkZoom, setLinkZoom] = useState("")
-    const [linkEncuesta, setLinkEncuesta] = useState("")
     const [inputCupos, setInputCupos] = useState("")
     const [inputHrsExtra, setInputHrsExtra] = useState("")
 
@@ -84,6 +87,10 @@ const ModalCrearEvento = (props) => {
     const [estadoEvento, setEstadoEvento] = useState("")
     const [listPonentes, setListPonentes] = useState([])
 
+    const [eventoAEditar, setEventoAEditar] = useState({
+        tipoensenanza : "Virtual"
+    })
+
     return (
         <Modal 
             isOpen={mostrarModal} 
@@ -94,7 +101,7 @@ const ModalCrearEvento = (props) => {
         >
             <ModalOverlay />
             <ModalContent>
-            <ModalHeader>Registrar Evento</ModalHeader>
+            <ModalHeader>Editar Evento ({eventoSeleccionado.nombre})</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
                 <div>
@@ -106,6 +113,11 @@ const ModalCrearEvento = (props) => {
                     </div>
                 </div>
                 <div>
+                    {/* <button onClick={() => {
+                        console.log(eventoSeleccionado)
+                        console.log(listPonentes)
+                        console.log(rex_lista_completa_ponentes_eventos)
+                    }}>click</button> */}
                     <div
                         style={{
                             display: 'flex',
@@ -118,8 +130,14 @@ const ModalCrearEvento = (props) => {
                             style={{
                                 display: 'flex'
                             }}
-                            onChange={setTipoEnsenanza} 
-                            value={tipoEnsenanza}
+                            // onChange={setTipoEnsenanza} 
+                            onChange={(e) => {
+                                setEventoSeleccionado({
+                                    ...eventoSeleccionado,
+                                    tipoensenanza : e
+                                })
+                            }} 
+                            value={eventoSeleccionado.tipoensenanza}
                         >
                             <div
                                 style={{
@@ -130,7 +148,7 @@ const ModalCrearEvento = (props) => {
                             >
                                 <div
                                     style={
-                                        tipoEnsenanza == "Virtual"
+                                        eventoSeleccionado.tipoensenanza == "Virtual"
                                         ?{
                                             borderRadius:'8px',
                                             border: '1px solid #FF7435',
@@ -171,7 +189,7 @@ const ModalCrearEvento = (props) => {
                             >
                                 <div
                                     style={
-                                        tipoEnsenanza == "Presencial"
+                                        eventoSeleccionado.tipoensenanza == "Presencial"
                                         ?{
                                             borderRadius:'8px',
                                             border: '1px solid #FF7435',
@@ -221,9 +239,12 @@ const ModalCrearEvento = (props) => {
                                     variant='filled' 
                                     placeholder='Nombre del Evento'
                                     onChange={(e) => {
-                                        setInputNombre(e.target.value)
+                                        setEventoSeleccionado({
+                                            ...eventoSeleccionado,
+                                            nombre : e.target.value
+                                        })
                                     }}
-                                    value={inputNombre}
+                                    value={eventoSeleccionado.nombre}
                                 />
                             </div>
                         </div>
@@ -234,19 +255,22 @@ const ModalCrearEvento = (props) => {
                         >
                             <Checkbox 
                                 onChange={(e) => {
-                                    setInputRecurrente(e.target.checked)
-
-                                    if(!e.target.checked){
-                                        dispatch(EliminarItemListaFechasEventosReducer(99, true))
-                                    }
-
+                                    eventoSeleccionado?.fechas?.splice(1, 99)
+                                    setEventoSeleccionado({
+                                        ...eventoSeleccionado,
+                                        recurrente : e.target.checked,
+                                        edito : true
+                                    })
                                 }}
-                                checked={inputRecurrente}
+                                checked={eventoSeleccionado.recurrente}
+                                defaultChecked={eventoSeleccionado.recurrente}
                             >
                                 Evento Recurrente
                             </Checkbox>
                         </div>
                     </SimpleGrid>
+
+                    
                     <SimpleGrid 
                         columns={{ base: 1, md: 1 }} gap='20px'
                     >
@@ -260,7 +284,7 @@ const ModalCrearEvento = (props) => {
                         </div>
                         
                         {
-                            rex_lista_fechas_eventos.map((lfecha, pos) => {
+                            eventoSeleccionado?.fechas?.map((lfecha, pos) => {
                                 return (
                                     <SimpleGrid 
                                         columns={{ base: 1, md: 2 }} gap='20px'
@@ -287,10 +311,16 @@ const ModalCrearEvento = (props) => {
                                                         border: '1px solid #0C0F59',
                                                         marginRight:'10px'
                                                     }}
-                                                    value={lfecha.fecha}
+                                                    value={lfecha.fechora}
                                                     onChange={(e) => {
-                                                        console.log(e.target.value);
-                                                        dispatch(EditarListaFechasEventosReducer(e.target.value, pos))
+                                                        let nuevasFechas = eventoSeleccionado?.fechas?.find(lf => lf.id == lfecha.id)
+                                                        nuevasFechas.fechora = e.target.value
+                                                        nuevasFechas.fecha = e.target.value
+
+                                                        setEventoSeleccionado({
+                                                            ...eventoSeleccionado,
+                                                            edito : true
+                                                        })
                                                     }}
                                                 />
                                             </div>
@@ -303,7 +333,7 @@ const ModalCrearEvento = (props) => {
                                         >
 
                                             {
-                                                inputRecurrente == true
+                                                eventoSeleccionado.recurrente == true
                                                 ?pos == 0
                                                     ?<div
                                                         style={{
@@ -319,7 +349,14 @@ const ModalCrearEvento = (props) => {
                                                             fontSize:'12px'
                                                         }}
                                                         onClick={() => {
-                                                            dispatch(AgregarListaFechasEventosReducer({fecha:null}))
+                                                            eventoSeleccionado?.fechas?.push({
+                                                                fecha : null,
+                                                                id : Math.random()
+                                                            })
+                                                            setEventoSeleccionado({
+                                                                ...eventoSeleccionado,
+                                                                edito : true
+                                                            })
                                                         }}
                                                     >
                                                         <AddIcon />
@@ -338,7 +375,11 @@ const ModalCrearEvento = (props) => {
                                                             fontSize:'12px'
                                                         }}
                                                         onClick={() => {
-                                                            dispatch(EliminarItemListaFechasEventosReducer(pos))
+                                                            eventoSeleccionado?.fechas?.splice(pos, 1)
+                                                            setEventoSeleccionado({
+                                                                ...eventoSeleccionado,
+                                                                edito : true
+                                                            })
                                                         }}
                                                     >
                                                         <MinusIcon />
@@ -366,9 +407,13 @@ const ModalCrearEvento = (props) => {
                                 size='sm' 
                                 variant='filled'
                                 onChange={(e) => {
-                                    setIdCarrera(e.target.value)
+                                    // setIdCarrera(e.target.value)
+                                    setEventoSeleccionado({
+                                        ...eventoSeleccionado,
+                                        carrera : e.target.value
+                                    })
                                 }}
-                                value={idCarrera}
+                                value={eventoSeleccionado.carrera}
                             >
                                 {
                                     rex_lista_gestion_carreras.map((carrera) => {
@@ -402,9 +447,12 @@ const ModalCrearEvento = (props) => {
                                 size='sm' 
                                 variant='filled'
                                 onChange={(e) => {
-                                    setClasificacionEvento(e.target.value)
+                                    setEventoSeleccionado({
+                                        ...eventoSeleccionado,
+                                        clasificacionevento : e.target.value
+                                    })
                                 }}
-                                value={clasificacionEvento}
+                                value={eventoSeleccionado.clasificacionevento}
                             >
                                 <option 
                                     value={"clasi1"}
@@ -429,9 +477,12 @@ const ModalCrearEvento = (props) => {
                                 size='sm' 
                                 variant='filled'
                                 onChange={(e) => {
-                                    setTipoEvento(e.target.value)
+                                    setEventoSeleccionado({
+                                        ...eventoSeleccionado,
+                                        tipoevento : e.target.value
+                                    })
                                 }}
-                                value={tipoEvento}
+                                value={eventoSeleccionado.tipoevento}
                             >
                                 <option 
                                     value={"evnt1"}
@@ -453,7 +504,7 @@ const ModalCrearEvento = (props) => {
                         columns={{ base: 1, md: 1 }} gap='20px'
                     >
                         {
-                            tipoEnsenanza == "Presencial"
+                            eventoSeleccionado.tipoensenanza == "Presencial"
                             ?<>
                                 <div
                                     style={{marginTop:'-10px'}}
@@ -468,16 +519,19 @@ const ModalCrearEvento = (props) => {
                                     <Input 
                                         variant='filled' placeholder='Organización' 
                                         onChange={(e) => {
-                                            setOrganizacion(e.target.value)
+                                            setEventoSeleccionado({
+                                                ...eventoSeleccionado,
+                                                organizacion : e.target.value
+                                            })
                                         }}
-                                        value={organizacion}
+                                        value={eventoSeleccionado.organizacion}
                                     />
                                 </div>   
                             </>
                             :null
                         }
                         <div>
-                            Nombre del Ponente
+                            Nombre del Ponentess
                         </div>
                         <div
                             style={{
@@ -498,15 +552,22 @@ const ModalCrearEvento = (props) => {
                                 options={rex_lista_completa_ponentes_eventos}
                                 isMulti
                                 onChange={(e) => {
-                                    setListPonentes(e)
+                                    setEventoSeleccionado({
+                                        ...eventoSeleccionado,
+                                        ponentes : e
+                                    })
                                 }}
-                                value={listPonentes}
+                                value={
+                                    eventoSeleccionado.ponentes 
+                                    ?eventoSeleccionado.ponentes 
+                                    : []
+                                }
                             />
 
                         </div>
                         
                         {
-                            tipoEnsenanza == "Presencial"
+                            eventoSeleccionado.tipoensenanza == "Presencial"
                             ?<div
                                 style={{
                                     marginTop:'-20px'
@@ -528,9 +589,12 @@ const ModalCrearEvento = (props) => {
                                             size='sm' 
                                             variant='filled'
                                             onChange={(e) => {
-                                                setInputSede(e.target.value)
+                                                setEventoSeleccionado({
+                                                    ...eventoSeleccionado,
+                                                    sede : e.target.value
+                                                })
                                             }}
-                                            value={inputSede}
+                                            value={eventoSeleccionado.sede}
                                         >
                                             <option 
                                                 value={"sed1"}
@@ -554,9 +618,12 @@ const ModalCrearEvento = (props) => {
                                             size='sm' 
                                             variant='filled'
                                             onChange={(e) => {
-                                                setAuditoria(e.target.value)
+                                                setEventoSeleccionado({
+                                                    ...eventoSeleccionado,
+                                                    auditoria : e.target.value
+                                                })
                                             }}
-                                            value={auditoria}
+                                            value={eventoSeleccionado.auditoria}
                                         >
                                             <option 
                                                 value={"aud1"}
@@ -585,9 +652,12 @@ const ModalCrearEvento = (props) => {
                                     <Input 
                                         variant='filled' placeholder='Link de Zoom' 
                                         onChange={(e) => {
-                                            setLinkZoom(e.target.value)
+                                            setEventoSeleccionado({
+                                                ...eventoSeleccionado,
+                                                zoom : e.target.value
+                                            })
                                         }}
-                                        value={linkZoom}
+                                        value={eventoSeleccionado.zoom}
                                     />
                                 </div>   
                             </>
@@ -608,10 +678,13 @@ const ModalCrearEvento = (props) => {
                                     variant='filled' 
                                     placeholder='Numero Cupos'
                                     onChange={(e) => {
-                                        setInputCupos(e.target.value)
+                                        setEventoSeleccionado({
+                                            ...eventoSeleccionado,
+                                            cupos : e.target.value
+                                        })
                                     }}
                                     type='number'
-                                    value={inputCupos}
+                                    value={eventoSeleccionado.cupos}
                                 />
                             </div>
                             <div>
@@ -622,13 +695,17 @@ const ModalCrearEvento = (props) => {
                                     variant='filled' 
                                     placeholder='Hrs Extracurriculares'
                                     onChange={(e) => {
-                                        setInputHrsExtra(e.target.value)
+                                        setEventoSeleccionado({
+                                            ...eventoSeleccionado,
+                                            hrsextracurriculares : e.target.value
+                                        })
                                     }}
                                     type='number'
-                                    value={inputHrsExtra}
+                                    value={eventoSeleccionado.hrsextracurriculares}
                                 />
                             </div>
                         </SimpleGrid>
+                        
 
                         <>
                             <div>
@@ -642,15 +719,19 @@ const ModalCrearEvento = (props) => {
                                 <Input 
                                     variant='filled' placeholder='Link de Encuesta' 
                                     onChange={(e) => {
-                                        setLinkEncuesta(e.target.value)
+                                        
+                                        setEventoSeleccionado({
+                                            ...eventoSeleccionado,
+                                            linkencuesta : e.target.value
+                                        })
                                     }}
-                                    value={linkEncuesta}
+                                    value={eventoSeleccionado.linkencuesta}
                                 />
                             </div>   
                         </>
 
                         <div>
-                            Cargar Flyer
+                            Cargar Nuevo Flyer
                         </div>
                         <div
                             style={{
@@ -685,7 +766,7 @@ const ModalCrearEvento = (props) => {
 
 
                         <div>
-                            Cargar Plantilla Certificado
+                            Cargar Nueva Plantilla de Certificado
                         </div>
                         <div
                             style={{
@@ -737,36 +818,34 @@ const ModalCrearEvento = (props) => {
                     onClick={async () => {
                         setLoadingGuardar(true)
                         const data = {
-                            "req_carrera" : idCarrera,
-                            "req_recurrente" : inputRecurrente,
-                            "req_tipoensenanza" : tipoEnsenanza,
-                            "req_clasificacionevento" : clasificacionEvento,
-                            "req_tipoevento" : tipoEvento,
-                            "req_organizacion" : organizacion,
-                            "req_zoom" : linkZoom,
-                            "req_linkEncuesta" : linkEncuesta,
+                            "req_id" : eventoSeleccionado.idevento,
+                            "req_carrera" : eventoSeleccionado.carrera,
+                            "req_recurrente" : eventoSeleccionado.recurrente,
+                            "req_tipoensenanza" : eventoSeleccionado.tipoensenanza,
+                            "req_clasificacionevento" : eventoSeleccionado.clasificacionevento,
+                            "req_tipoevento" : eventoSeleccionado.tipoevento,
+                            "req_organizacion" : eventoSeleccionado.organizacion,
+                            "req_zoom" : eventoSeleccionado.zoom,
+                            "req_linkEncuesta" : eventoSeleccionado.linkencuesta,
                             "req_linkflyer" : "",
-                            "req_sede" : inputSede,
-                            "req_auditoria" : auditoria,
-                            "req_nombre" : inputNombre,
-                            "req_fecha" : "",
-                            "req_fechahora" : "",
+                            "req_sede" : eventoSeleccionado.sede,
+                            "req_auditoria" : eventoSeleccionado.auditoria,
+                            "req_nombre" : eventoSeleccionado.nombre,
                             "req_estado" : true,
-                            "req_ponente" : "",
-                            "req_list_fechas" : rex_lista_fechas_eventos,
-                            "req_list_ponentes" : listPonentes,
-                            "req_cupos" : inputCupos,
-                            "req_hrsextra" : inputHrsExtra
+                            "req_list_fechas" : eventoSeleccionado.fechas,
+                            "req_list_ponentes" : eventoSeleccionado.ponentes,
+                            "req_cupos" : eventoSeleccionado.cupos,
+                            "req_hrsextra" : eventoSeleccionado.hrsextracurriculares
                             // "req_linkflyer" : fileFlyer,
                         }
 
-                        const rpta = await agregarEvento(data, fileFlyer, filePlantillaCertificado)
+                        const rpta = await funEditarEvento(data, fileFlyer, filePlantillaCertificado)
                         if(rpta.respuesta == true){
                             cogoToast.success(
-                                'El evento fue creado correctamente',
+                                'El evento fue editado correctamente',
                                 {
                                     position: 'top-right',
-                                    heading: 'Evento Creado'
+                                    heading: 'Evento Editado'
                                 },
                             );
                             setMostrarModal(!mostrarModal)
@@ -785,4 +864,4 @@ const ModalCrearEvento = (props) => {
 
 }
 
-export default ModalCrearEvento
+export default EditarEvento

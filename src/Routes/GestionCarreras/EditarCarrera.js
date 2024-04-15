@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {
     Modal,
     ModalOverlay,
@@ -13,16 +13,16 @@ import {
     Button
 } from '@chakra-ui/react';
 
-const RegistrarCarrera = (props) => {
+const EditarCarrera = (props) => {
 
     const {
         mostrarModal,
         setMostrarModal,
-        funCrear,
-        loading
+        funEditar,
+        loading,
+        carreraSeleccionada,
+        funEditarContenido
     } = props
-
-    const [input_nombre, setInput_nombre] = useState("")
 
     return (
         <div>
@@ -35,7 +35,7 @@ const RegistrarCarrera = (props) => {
             >
                 <ModalOverlay />
                 <ModalContent>
-                <ModalHeader>Crea un carrera</ModalHeader>
+                <ModalHeader>Editar Carrera</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody pb={6}>
                     <FormControl>
@@ -43,9 +43,9 @@ const RegistrarCarrera = (props) => {
                         <Input 
                             placeholder='Nombre de la carrera' 
                             onChange={(e) => {
-                                setInput_nombre(e.target.value)
+                                funEditarContenido(e.target.value)
                             }}
-                            value={input_nombre}
+                            value={carreraSeleccionada.nombreEditado}
                         />
                     </FormControl>
                 </ModalBody>
@@ -54,8 +54,7 @@ const RegistrarCarrera = (props) => {
                     <Button 
                         colorScheme='blue' mr={3}
                         onClick={async () => {
-                            const rpta = await funCrear(input_nombre)
-                            setInput_nombre("")
+                            const rpta = await funEditar(carreraSeleccionada.nombreEditado)
                         }}
                         isLoading={loading}
                     >
@@ -76,4 +75,4 @@ const RegistrarCarrera = (props) => {
     )
 }
 
-export default RegistrarCarrera
+export default EditarCarrera

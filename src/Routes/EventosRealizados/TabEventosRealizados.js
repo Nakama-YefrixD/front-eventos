@@ -114,11 +114,11 @@ const TabEventosRealizados = (props) => {
         {
             title: 'Nombre del Evento',
             key: 'nombre',
-            ...getColumnSearchPropsProps('eventos', 'nombre', 'nombre'), // Columna con filtro
+            // ...getColumnSearchPropsProps('eventos', 'nombre', 'nombre'), // Columna con filtro
             render: (info) => (
                 <div>
                     {
-                        info.eventos.nombre
+                        info.eventos?.nombre
                     }
                 </div>
             )
@@ -145,11 +145,11 @@ const TabEventosRealizados = (props) => {
         {
             title: 'Tipo',
             key: 'tipoevento',
-            ...getColumnSearchPropsProps('eventos', 'tipoevento', 'tipoevento'), // Columna con filtro
+            // ...getColumnSearchPropsProps('eventos', 'tipoevento', 'tipoevento'), // Columna con filtro
             render: (info) => (
                 <div>
                     {
-                        info.eventos.tipoevento
+                        info.eventos?.tipoevento
                     }
                 </div>
             )
@@ -238,8 +238,8 @@ const TabEventosRealizados = (props) => {
                         >
                             <DownloadOutlined 
                                 onClick={() => {
-                                    // console.log(_info.eventos.id);
-                                    dispatch(DescargarPlantillaListaUsuariosReducer(_info.eventos.id))
+                                    // console.log(_info.eventos?.id);
+                                    dispatch(DescargarPlantillaListaUsuariosReducer(_info.eventos?.id))
                                 }}
                             />
                         </Tooltip>

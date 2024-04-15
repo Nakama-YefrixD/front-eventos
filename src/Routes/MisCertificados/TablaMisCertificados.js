@@ -157,23 +157,35 @@ const TablaMisCertificados = (props) => {
             title: 'Encuesta de Satisfacción',
             key: 'encuestado',
             render: _info => (
-                _info.encuestado
-                ?<div
-                    style={{
-                        color: '#2AD295'
-                    }}
-                >
-                    Realizado
-                </div>
-                :<div
+                <a
                     style={{
                         cursor: 'pointer',
                         color: 'blue',
                         textDecoration: 'underline'
                     }}
+                    href={_info?.eventos?.linkencuesta} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
                 >
-                    Pendiente
-                </div>
+                    Ir a Formulario
+                </a>
+                // _info.encuestado
+                // ?<div
+                //     style={{
+                //         color: '#2AD295'
+                //     }}
+                // >
+                //     Realizado
+                // </div>
+                // :<div
+                //     style={{
+                //         cursor: 'pointer',
+                //         color: 'blue',
+                //         textDecoration: 'underline'
+                //     }}
+                // >
+                //     Pendiente
+                // </div>
             )
         },
         {

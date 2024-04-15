@@ -30,7 +30,9 @@ const ModalTablaPonentes = (props) => {
     const brandColor = useColorModeValue('brand.500', 'white');
 
     useEffect(() => {
-        dispatch(ObtenerPonentesEventosReducer(eventoSeleccionado))
+        if(!eventoSeleccionado.ponentes){
+            dispatch(ObtenerPonentesEventosReducer(eventoSeleccionado))
+        }
     }, [])
 
     // INPUTS PARA ENVIAR

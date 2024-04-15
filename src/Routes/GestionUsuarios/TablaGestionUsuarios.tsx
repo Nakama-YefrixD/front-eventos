@@ -240,7 +240,7 @@ export default function TablaGestionUsuarios(props: { tableData: any, lista_data
 				AlertDialogExample(
 					showDeleteRow, 
 					() => {
-						// setShowDeleteRow(!showDeleteRow)
+						setShowDeleteRow(!showDeleteRow)
 					},
 					async () => {
 						setShowLoading(!showLoading)
@@ -311,7 +311,12 @@ export default function TablaGestionUsuarios(props: { tableData: any, lista_data
 }
  
 
-function AlertDialogExample(isOpen:boolean, onOpenClose:Function, eliminarUsuario: Function, loading:boolean ) {
+function AlertDialogExample(
+	isOpen:boolean, 
+	onOpenClose:Function, 
+	eliminarUsuario: Function, 
+	loading:boolean 
+) {
 	// const { isOpen, onOpen, onClose } = useDisclosure()
 	const cancelRef = React.useRef()
   

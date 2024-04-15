@@ -31,6 +31,8 @@ const EventosRealizados = () => {
             >
                 Eventos Realizados
             </div>
+            
+            {/* <button onClick={()=> {console.log(rex_lista_eventos_realizados);}}> ver </button> */}
 
             <TabEventosRealizados 
                 table_data = {rex_lista_eventos_realizados}

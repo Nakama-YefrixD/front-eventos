@@ -30,7 +30,9 @@ const ModalTablaHorarios = (props) => {
     const brandColor = useColorModeValue('brand.500', 'white');
 
     useEffect(() => {
-        dispatch(ObtenerFechasEventosReducer(eventoSeleccionado))
+        if(!eventoSeleccionado.fechas){
+            dispatch(ObtenerFechasEventosReducer(eventoSeleccionado))
+        }
     }, [])
 
     // INPUTS PARA ENVIAR
@@ -56,27 +58,6 @@ const ModalTablaHorarios = (props) => {
         },
     ];
 
-    const data = [
-        {
-            key: '1',
-            name: 'John Brown',
-            age: 32,
-            address: 'New York No. 1 Lake Park'
-        },
-        {
-            key: '2',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park'
-        },
-        {
-            key: '3',
-            name: 'Joe Black',
-            age: 32,
-            address: 'Sydney No. 1 Lake Park'
-        },
-    ];
-
     return (
         <Modal 
             isOpen={mostrarModal} 
@@ -90,7 +71,7 @@ const ModalTablaHorarios = (props) => {
             <ModalHeader>Registros Horarios</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-                
+                {/* <button onClick={() => console.log(eventoSeleccionado)}>clic</button> */}
                 <Table 
                     columns={columns}
                     dataSource={rex_lista_fechas_eventos_tabla}

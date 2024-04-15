@@ -26,6 +26,7 @@ import React, {useState, useEffect} from 'react';
 import { MdCancel, MdCheckCircle, MdOutlineError } from 'react-icons/md';
 import { useHistory } from "react-router-dom";
 import { format } from 'date-fns';
+import EditarEvento from './EditarEvento';
 
 type RowObj = {
 	id: number;
@@ -62,6 +63,8 @@ export default function TablaGestionEventos(
 	const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
 	const [showDeleteRow, setShowDeleteRow] = useState(false)
 	const [showLoading, setShowLoading] = useState(false)
+	const [mostrarModalEditar, setMostrarModalEditar] = useState(false)
+	// const [eventoSeleccionado, setEventoSeleccionado] = useState({})
 	const [idEventoSeleccionado, setidEventoSeleccionado] = useState(0)
 
 	let defaultData = tableData;
@@ -160,7 +163,7 @@ export default function TablaGestionEventos(
 						{
 							info.getValue() == true
 							?"Activo"
-							:"Desactivado"
+							:"Inactivo"
 						}
 					</Text>
 				</Flex>
@@ -229,8 +232,12 @@ export default function TablaGestionEventos(
 								justifyContent: "center"
 							}}
 							onClick={() => {
-								editarEvento(info.getValue())
-								history.push('/otros/editar-usuario');
+								console.log(info);
+								setEventoSeleccionado(info)
+								setMostrarModalEditar(!mostrarModalEditar)
+								// editarEvento(info.getValue())
+								// history.push('/otros/editar-usuario');
+
 							}}
 						>
 							<EditIcon/>
@@ -276,13 +283,20 @@ export default function TablaGestionEventos(
 		debugTable: true
 	});
 
+	const FunEditarEvento = (evento = Object, fileFlyer = String, fileCertificado=String) => {
+        console.log(evento);
+        console.log(fileFlyer);
+        console.log(fileCertificado);
+    }
+
+
 	return (
 		<Card flexDirection='column' w='100%' px='0px' overflowX={{ sm: 'scroll', lg: 'hidden' }}>
 			{
 				AlertDialogExample(
 					showDeleteRow, 
 					() => {
-						// setShowDeleteRow(!showDeleteRow)
+						setShowDeleteRow(!showDeleteRow)
 					},
 					async () => {
 						setShowLoading(!showLoading)
@@ -342,6 +356,12 @@ export default function TablaGestionEventos(
 						})}
 					</Tbody>
 				</Table>
+
+				<EditarEvento 
+					mostrarModal = {mostrarModalEditar}
+					setMostrarModal = {setMostrarModalEditar}
+					funEditarEvento = {FunEditarEvento}
+				/>
 			</Box>
 		</Card>
 	);

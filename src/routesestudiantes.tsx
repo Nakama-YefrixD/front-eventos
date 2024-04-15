@@ -58,13 +58,13 @@ const routesestudiantes = [
 		component: SignInCentered
 	},
 
-	{
-		name: 'Eventos Realizados',
-		layout: '/otros',
-		path: '/eventos-realizados',
-		icon: <Icon as={MdOutlineEventAvailable} width='20px' height='20px' color='inherit' />,
-		component: RTL
-	},
+	// {
+	// 	name: 'Eventos Realizados',
+	// 	layout: '/otros',
+	// 	path: '/eventos-realizados',
+	// 	icon: <Icon as={MdOutlineEventAvailable} width='20px' height='20px' color='inherit' />,
+	// 	component: RTL
+	// },
 ];
 
 export default routesestudiantes;

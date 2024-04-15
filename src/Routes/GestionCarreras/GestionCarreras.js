@@ -25,6 +25,7 @@ import {
 } from '../../Redux/Actions/Administrador/GestionCarreras'
 import RegistrarCarrera from './RegistrarCarrera';
 import cogoToast from 'cogo-toast';
+import TabGestionCarreras from './TabGestionCarreras';
 
 const GestionCarreras = () => {
 
@@ -104,61 +105,39 @@ const GestionCarreras = () => {
             </div>
 
 
-            <Card 
-                style={{marginBottom:'20px'}}
+            <div 
+                style={{
+                    marginBottom:'20px'
+                }}
             >
                 <div
                     style={{
-                        display:'flex'
                     }}
                 >
                     <div
                         style={{
-                            width:'35%',
-                            alignSelf: 'center'
+                            width:'110px',
+                            height:'40px',
+                            background:'#0C0F59',
+                            color:'white',
+                            borderRadius:'8px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor:'pointer',
+                            
+                        }}
+                        onClick={() => {
+                            setShowModalCrearCarrera(!showModalCrearCarrera)
                         }}
                     >
-                        <Input 
-                            style={{
-                                border: '1px solid #0C0F59',
-                                borderRadius: '8px',
-                                paddingLeft:'5px',
-                                width: '250px'
-                            }}
-                            placeholder='Buscar' 
-                        />
-                    </div>
-                    <div
-                        style={{
-                            width:'35%',
-                            position:'relative'
-                        }}
-                    >
-                        <div
-                            style={{
-                                width:'110px',
-                                height:'40px',
-                                background:'#0C0F59',
-                                color:'white',
-                                borderRadius:'8px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                cursor:'pointer',
-                                right: '0',
-                                position: 'absolute'
-                            }}
-                            onClick={() => {
-                                setShowModalCrearCarrera(!showModalCrearCarrera)
-                            }}
-                        >
-                            Agregar
-                        </div>
+                        Agregar
                     </div>
                 </div>
-            </Card>
+                
+            </div>
             
-            {
+            {/* {
                 rex_lista_gestion_carreras.length > 0 && showTableCarreras
                 ?<TablaGestionCarreras 
                     tableData={rex_lista_gestion_carreras}
@@ -166,7 +145,12 @@ const GestionCarreras = () => {
                     eliminarCarrera = {EliminarCarrera}
                 />
                 :null
-            }
+            } */}
+
+            <TabGestionCarreras 
+                table_data = {rex_lista_gestion_carreras}
+                eliminarCarrera = {EliminarCarrera}
+            />
             
             <RegistrarCarrera 
                 mostrarModal = {showModalCrearCarrera}

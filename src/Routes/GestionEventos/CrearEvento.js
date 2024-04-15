@@ -28,6 +28,8 @@ import {
 } from '@chakra-ui/react';
 import Dropzone from 'views/admin/profile/components/Dropzone';
 import { MdUpload } from 'react-icons/md';
+import { Checkbox as CheckboxAntd } from 'antd';
+
 
 const events = [
     { title: 'Meeting', start: new Date() }
@@ -216,9 +218,19 @@ const CrearEvento = () => {
                                     alignSelf: "center"
                                 }}
                             >
-                                <Checkbox defaultChecked>
+                                {/* <Checkbox 
+                                    defaultChecked
+                                    onChange={(e) => {console.log(e);}}
+                                >
                                     Evento Recurrente
-                                </Checkbox>
+                                </Checkbox> */}
+                                <CheckboxAntd 
+                                    onChange={(e) => {
+                                        console.log(e);
+                                    }}
+                                >
+                                    Evento Recurrentes
+                                </CheckboxAntd>
                             </div>
                         </SimpleGrid>
                         <SimpleGrid 

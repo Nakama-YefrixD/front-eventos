@@ -30,8 +30,8 @@ export function CalendarEventosInscritos(props) {
                 eventClick={(e) => {
                     
                     const evento_select = eventos.find(event => event.codigo === e.event._def.extendedProps.codigo)
-                    console.log(e.event._def.extendedProps.codigo);
-                    console.log(evento_select);
+                    // console.log(e.event._def.extendedProps.codigo);
+                    // console.log(evento_select);
                     setEventoSeleccionado(evento_select)
                     setShowModal(true)
 

@@ -152,7 +152,7 @@ const ModalEstudiantes = (props) => {
                     colorScheme='blue'
                     isLoading={loadingGuardar}
                     onClick={async () => {
-                        
+                        setMostrarModal(!mostrarModal)
                     }}
                 >
                     Cerrar

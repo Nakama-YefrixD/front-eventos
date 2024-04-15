@@ -15,7 +15,7 @@ export const ObtenerEventosHomeReducer = () => async ( dispatch ) => {
                 'usu_token'	   : localStorage.getItem("usutoken"),
             },
             body: JSON.stringify({
-                
+                req_usutoken : localStorage.getItem("usutoken")
             }),
         }
     )

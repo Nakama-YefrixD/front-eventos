@@ -92,6 +92,9 @@ const Home = () => {
                                 }
                                 download='#'
                                 showIcon={false}
+                                inscrito = { evt.eventosusuarios.length > 0 ?true :false }
+                                evento = {evt}
+                                mostrarEventos = {() => dispatch(ObtenerEventosHomeReducer())}
                             />
                             :null
                         )
@@ -128,6 +131,9 @@ const Home = () => {
                                 }
                                 download='#'
                                 showIcon={true}
+                                inscrito = { evt.eventosusuarios.length > 0 ?true :false }
+                                evento = {evt}
+                                mostrarEventos = {() => dispatch(ObtenerEventosHomeReducer())}
                             />
                             :null
                         )

@@ -468,12 +468,13 @@ const EditarUsuario = () => {
                             setTxtRpta(rpta)
 
                             if(rpta.respuesta == true){
-                                
+                                history.push('/otros/gestion-usuarios');
                             }else{
                                 setMostrarAlert("2")
                             }
 
                             setCargandoBtn(false)
+
                         }}
                         isLoading={cargandoBtn}
                     >

@@ -22,6 +22,7 @@ import {
     EliminarUsuarioReducer
 } from '../../Redux/Actions/Administrador/GestionUsuarios'
 import { useSelector, useDispatch } from 'react-redux'
+import TabGestionUsuarios from './TabGestionUsuarios';
 
 const GestionUsuarios = () => {
 
@@ -71,72 +72,15 @@ const GestionUsuarios = () => {
                 Gestion de Usuarios
             </div>
 
-            <Card 
+            <div 
                 style={{marginBottom:'20px'}}
             >
                 <div
-                    style={{
-                        display:'flex'
-                    }}
+                    // style={{
+                    //     display:'flex'
+                    // }}
                 >
-                    <div
-                        style={{
-                            width:'35%',
-                            alignSelf: 'center',
-                            paddingRight:'20px',
-                            marginTop:'-10px'
-                        }}
-                    >
-                        <Input 
-                            variant='filled' 
-                            placeholder='Buscar' 
-                            style={{
-                                border: '1px solid gray'
-                            }}
-                        />
-                    </div>
-                    <div
-                        style={{
-                            display:'flex',
-                            width:'30%'
-                        }}
-                    >
-                        <Flex
-                            px={{ base: '0px', '2xl': '10px' }}
-                            justifyContent='space-between'
-                            alignItems='center'
-                            w='100%'
-                            mb='8px'>
-                            <Select 
-                                placeholder='Rol'
-                                style={{marginRight:'10px'}}
-                                onChange={(e) => {
-                                    dispatch(ObtenerListaUsuariosAdministradorReducer(input_estado, e.target.value))
-                                    setInput_rol(e.target.value)
-                                }}
-                            >
-                                <option value='Ponente'>Ponente</option>
-                                <option value='Estudiante'>Estudiante</option>
-                            </Select>
-                        </Flex>
-                        <Flex
-                            px={{ base: '0px', '2xl': '10px' }}
-                            justifyContent='space-between'
-                            alignItems='center'
-                            w='100%'
-                            mb='8px'>
-                            <Select 
-                                placeholder='Estado'
-                                onChange={(e) => {
-                                    dispatch(ObtenerListaUsuariosAdministradorReducer(e.target.value, input_rol))
-                                    setInput_estado(e.target.value)
-                                }}
-                            >
-                                <option value={true}>Activo</option>
-                                <option value={false}>Inactivo</option>
-                            </Select>
-                        </Flex>
-                    </div>
+                    
                     <div
                         style={{
                             width:'35%',
@@ -154,8 +98,8 @@ const GestionUsuarios = () => {
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 cursor:'pointer',
-                                right: '0',
-                                position: 'absolute'
+                                // right: '0',
+                                // position: 'absolute'
                             }}
                             onClick={() => {
                                 history.push('/otros/registrar-usuario');
@@ -165,9 +109,9 @@ const GestionUsuarios = () => {
                         </div>
                     </div>
                 </div>
-            </Card>
+            </div>
 
-            {
+            {/* {
                 rex_lista_usuarios_adminsitrador.length > 0 && showTableUsuarios
                 ?<TablaGestionUsuarios 
                     tableData={tableDataComplex} 
@@ -180,7 +124,17 @@ const GestionUsuarios = () => {
                     }}
                 />
                 :null
-            }
+            } */}
+
+            <TabGestionUsuarios 
+                table_data = {rex_lista_usuarios_adminsitrador}
+                editarUsuario = {(e) => {
+                    EditarUsuario(e)
+                }}
+                eliminarUsuario = {(usuid) => {
+                    EliminarUsuario(usuid)
+                }}
+            />
             
             <Modal 
                 isOpen={false} 
