@@ -351,10 +351,10 @@ const CrearEvento = () => {
                                         </div>
                                         <div>
                                             <div>
-                                                Auditorio:
+                                                Lugar:
                                             </div>
                                             <Select 
-                                                placeholder='Seleccionar Auditorio'
+                                                placeholder='Seleccionar Lugar'
                                                 size='sm' 
                                                 variant='filled'
                                             />

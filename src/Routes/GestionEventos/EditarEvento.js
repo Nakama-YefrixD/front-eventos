@@ -611,10 +611,10 @@ const EditarEvento = (props) => {
                                     </div>
                                     <div>
                                         <div>
-                                            Auditorio:
+                                            Lugar:
                                         </div>
                                         <Input 
-                                            variant='filled' placeholder='Auditorio' 
+                                            variant='filled' placeholder='Lugar' 
                                             onChange={(e) => {
                                                 
                                                 setEventoSeleccionado({

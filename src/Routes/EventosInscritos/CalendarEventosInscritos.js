@@ -73,7 +73,8 @@ export function CalendarEventosInscritos(props) {
                         </>
                         :<>
                             <div>El evento sera de manera presencial, aquí tienes la información necesaria para ingresar:</div><br/>
-                            <div><b>Auditorio:</b> {eventoSeleccionado.auditoria}</div>
+                            {/* <div><b>Auditorio:</b> {eventoSeleccionado.auditoria}</div> */}
+                            <div><b>Lugar:</b> {eventoSeleccionado.auditoria}</div>
                             <div><b>Sede:</b> {eventoSeleccionado.sede}</div>
                         </>
                     }
