@@ -36,7 +36,7 @@ const HorasExtracurriculares = () => {
             >
                 Horas Extracurriculares
             </div>
-            <SimpleGrid columns={{ base: 1, md: 2, lg: 3, '2xl': 12 }} gap='20px' mb='20px'>
+            <SimpleGrid columns={{ base: 1, md: 2, lg: 3, xg:4, '2xl': 12 }} gap='20px' mb='20px'>
                 <div></div>
                 <div>
                     <MiniStatistics

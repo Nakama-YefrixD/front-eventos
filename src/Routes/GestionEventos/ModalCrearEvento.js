@@ -549,7 +549,14 @@ const ModalCrearEvento = (props) => {
                                         <div>
                                             Auditorio:
                                         </div>
-                                        <Select 
+                                        <Input 
+                                            variant='filled' placeholder='Auditorio' 
+                                            onChange={(e) => {
+                                                setAuditoria(e.target.value)
+                                            }}
+                                            value={auditoria}
+                                        />
+                                        {/* <Select 
                                             placeholder='Seleccionar Auditorio'
                                             size='sm' 
                                             variant='filled'
@@ -569,7 +576,7 @@ const ModalCrearEvento = (props) => {
                                             >
                                                 {"Auditoria 2"}
                                             </option>
-                                        </Select>
+                                        </Select> */}
                                     </div>
                                 </SimpleGrid>
                             </div>
@@ -658,7 +665,7 @@ const ModalCrearEvento = (props) => {
                             }}
                         >
                             <Dropzone
-                                w={{ base: '100%', '2xl': '108px' }}
+                                w={{ base: '100%', lg: '100%', xg: '100%', '2xl': '108px' }}
                                 me='36px'
                                 maxH={{ base: '30%', lg: '100%', '2xl': '100%' }}
                                 minH={{ base: '30%', lg: '100%', '2xl': '100%' }}
@@ -693,7 +700,7 @@ const ModalCrearEvento = (props) => {
                             }}
                         >
                             <Dropzone
-                                w={{ base: '100%', '2xl': '108px' }}
+                                w={{ base: '100%', lg: '100%', xg: '100%', '2xl': '108px' }}
                                 me='36px'
                                 maxH={{ base: '30%', lg: '100%', '2xl': '100%' }}
                                 minH={{ base: '30%', lg: '100%', '2xl': '100%' }}

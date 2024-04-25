@@ -613,7 +613,18 @@ const EditarEvento = (props) => {
                                         <div>
                                             Auditorio:
                                         </div>
-                                        <Select 
+                                        <Input 
+                                            variant='filled' placeholder='Auditorio' 
+                                            onChange={(e) => {
+                                                
+                                                setEventoSeleccionado({
+                                                    ...eventoSeleccionado,
+                                                    auditoria : e.target.value
+                                                })
+                                            }}
+                                            value={eventoSeleccionado.auditoria}
+                                        />
+                                        {/* <Select 
                                             placeholder='Seleccionar Auditorio'
                                             size='sm' 
                                             variant='filled'
@@ -636,7 +647,7 @@ const EditarEvento = (props) => {
                                             >
                                                 {"Auditoria 2"}
                                             </option>
-                                        </Select>
+                                        </Select> */}
                                     </div>
                                 </SimpleGrid>
                             </div>
@@ -739,7 +750,7 @@ const EditarEvento = (props) => {
                             }}
                         >
                             <Dropzone
-                                w={{ base: '100%', '2xl': '108px' }}
+                                w={{ base: '100%', lg: '100%', xg: '100%', '2xl': '108px' }}
                                 me='36px'
                                 maxH={{ base: '30%', lg: '100%', '2xl': '100%' }}
                                 minH={{ base: '30%', lg: '100%', '2xl': '100%' }}
@@ -774,7 +785,7 @@ const EditarEvento = (props) => {
                             }}
                         >
                             <Dropzone
-                                w={{ base: '100%', '2xl': '108px' }}
+                                w={{ base: '100%', lg: '100%', xg: '100%', '2xl': '108px' }}
                                 me='36px'
                                 maxH={{ base: '30%', lg: '100%', '2xl': '100%' }}
                                 minH={{ base: '30%', lg: '100%', '2xl': '100%' }}

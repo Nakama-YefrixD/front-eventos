@@ -327,6 +327,7 @@ const RegistrarUsuario = () => {
                         }}
                     >
                         <Input 
+                            type='date'
                             variant='filled' placeholder='Fecha de Nacimiento' 
                             onChange={(e) => {
                                 setIn_fechanac(e.target.value)
