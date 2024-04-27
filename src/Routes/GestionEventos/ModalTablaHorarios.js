@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { 
+    Flex, Text,
     Modal,
     ModalContent,
     ModalOverlay,
@@ -26,6 +27,7 @@ const ModalTablaHorarios = (props) => {
     const mostrarModal = props.mostrarModal
     const setMostrarModal = props.setMostrarModal
     const eventoSeleccionado = props.eventoSeleccionado
+    const columns = props.columnas
     
     const brandColor = useColorModeValue('brand.500', 'white');
 
@@ -39,7 +41,7 @@ const ModalTablaHorarios = (props) => {
 
     const [loadingGuardar, setLoadingGuardar] = useState(false)
 
-    const columns = [
+    const columnss = [
         {
             title: 'Item',
             dataIndex: 'item',
@@ -47,16 +49,84 @@ const ModalTablaHorarios = (props) => {
             render: (text) => <a>{text}</a>,
         },
         {
-            title: 'Fecha',
-            dataIndex: 'fecha',
-            key: 'fecha',
+            title: 'Fecha y Hora',
+            key: 'fechayhora',
+            render: _info => (
+                <div>
+                    <Flex align='center'>
+                        <Text >
+                            { _info.fecha +" "+ _info.hora.split(":")[0]+":"+_info.hora.split(":")[1]}
+                        </Text>
+                    </Flex>
+                </div>
+            )
         },
         {
-            title: 'Hora',
-            dataIndex: 'hora',
-            key: 'hora',
+            title: 'Sede',
+            key: 'sede',
+            render: _info => (
+                <div>
+                    <Flex align='center'>
+                        <Text 
+                            style={{
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow : 'ellipsis',
+                                width : '200px'
+                            }}
+                        >
+                            { _info.sede }
+                        </Text>
+                    </Flex>
+                </div>
+            )
+        },
+        {
+            title: 'Lugar',
+            key: 'lugar',
+            render: _info => (
+                <div>
+                    <Flex align='center'>
+                        <Text 
+                            style={{
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow : 'ellipsis',
+                                width : '200px'
+                            }}
+                        >
+                            { _info.lugar }
+                        </Text>
+                    </Flex>
+                </div>
+            )
+        },
+        {
+            title: 'Zoom',
+            key: 'linkzoom',
+            render: _info => (
+                <div>
+                    <Flex align='center'>
+                        <Text 
+                            style={{
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow : 'ellipsis',
+                                width : '200px'
+                            }}
+                        >
+                            { _info.linkzoom }
+                        </Text>
+                    </Flex>
+                </div>
+            )
         },
     ];
+
+    // width: 200px; /* ajusta el ancho según tus necesidades */
+    // white-space: nowrap;
+    // overflow: hidden;
+    // text-overflow: ellipsis;
 
     return (
         <Modal 
@@ -71,10 +141,125 @@ const ModalTablaHorarios = (props) => {
             <ModalHeader>Registros Horarios</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-                {/* <button onClick={() => console.log(eventoSeleccionado)}>clic</button> */}
+                <button onClick={() => console.log(eventoSeleccionado)}>clic</button>
                 <Table 
-                    columns={columns}
-                    dataSource={rex_lista_fechas_eventos_tabla}
+                    columns={
+                        columns
+                        ?columns
+                        :eventoSeleccionado.tipoensenanza == "Presencial"
+                        ?[
+                            {
+                                title: 'Fecha y Hora',
+                                key: 'fechayhora',
+                                render: _info => (
+                                    <div>
+                                        <Flex align='center'>
+                                            <Text >
+                                                { _info.fecha +" "+ _info.hora.split(":")[0]+":"+_info.hora.split(":")[1]}
+                                            </Text>
+                                        </Flex>
+                                    </div>
+                                )
+                            },
+                            {
+                                title: 'Sede',
+                                key: 'sede',
+                                render: _info => (
+                                    <div>
+                                        <Flex align='center'>
+                                            <Text 
+                                                style={{
+                                                    whiteSpace: 'nowrap',
+                                                    overflow: 'hidden',
+                                                    textOverflow : 'ellipsis',
+                                                    width : '100px'
+                                                }}
+                                                title={_info.sede}
+                                            >
+                                                { _info.sede }
+                                            </Text>
+                                        </Flex>
+                                    </div>
+                                )
+                            },
+                            {
+                                title: 'Lugar',
+                                key: 'lugar',
+                                render: _info => (
+                                    <div>
+                                        <Flex align='center'>
+                                            <Text 
+                                                style={{
+                                                    whiteSpace: 'nowrap',
+                                                    overflow: 'hidden',
+                                                    textOverflow : 'ellipsis',
+                                                    width : '200px'
+                                                }}
+                                                title={_info.lugar}
+                                            >
+                                                { _info.lugar }
+                                            </Text>
+                                        </Flex>
+                                    </div>
+                                )
+                            },
+                        ]
+                        :[
+                            {
+                                title: 'Item',
+                                dataIndex: 'item',
+                                key: 'item',
+                                render: (text) => <a>{text}</a>,
+                            },
+                            {
+                                title: 'Fecha y Hora',
+                                key: 'fechayhora',
+                                render: _info => (
+                                    <div>
+                                        <Flex align='center'>
+                                            <Text >
+                                                { _info.fecha +" "+ _info.hora.split(":")[0]+":"+_info.hora.split(":")[1]}
+                                            </Text>
+                                        </Flex>
+                                    </div>
+                                )
+                            },
+                            {
+                                title: 'Zoom',
+                                key: 'linkzoom',
+                                render: _info => (
+                                    <div>
+                                        <Flex align='center'>
+                                            <Text 
+                                                style={{
+                                                    whiteSpace: 'nowrap',
+                                                    overflow: 'hidden',
+                                                    textOverflow : 'ellipsis',
+                                                    width : '200px'
+                                                }}
+                                                title={_info.linkzoom}
+                                            >
+                                                <a
+                                                    style={{
+                                                        cursor: 'pointer',
+                                                        color: 'blue',
+                                                        textDecoration: 'underline'
+                                                    }}
+                                                    href={_info?.linkzoom }
+                                                    target="_blank" 
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    { _info.linkzoom }
+                                                </a>
+                                            </Text>
+                                        </Flex>
+                                    </div>
+                                )
+                            },
+                        ]
+                    }
+                    // dataSource={rex_lista_fechas_eventos_tabla}
+                    dataSource={eventoSeleccionado.fechas}
                 />
 
             </ModalBody>
@@ -93,7 +278,7 @@ const ModalTablaHorarios = (props) => {
                     colorScheme='blue'
                     isLoading={loadingGuardar}
                     onClick={async () => {
-                        
+                        setMostrarModal(!mostrarModal)
                     }}
                 >
                     Cerrar

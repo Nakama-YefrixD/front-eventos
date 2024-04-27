@@ -106,7 +106,7 @@ const TablaMisHorasExtracurriculares = (props) => {
             render: (info) => (
                 <div
                     onClick={() => {
-                        setEventoSeleccionado(info)
+                        setEventoSeleccionado(info.eventos)
                         setMostrarModalPonente(!mostrarModalPonente)
                     }}
                     style={{
@@ -125,7 +125,7 @@ const TablaMisHorasExtracurriculares = (props) => {
             render: (info) => (
                 <div
                     onClick={() => {
-                        setEventoSeleccionado(info)
+                        setEventoSeleccionado(info.eventos)
                         setMostrarModalHorario(!mostrarModalHorario)
                     }}
                     style={{

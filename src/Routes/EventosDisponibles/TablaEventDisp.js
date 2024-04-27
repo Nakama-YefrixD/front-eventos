@@ -10,6 +10,9 @@ import {
 } from '../../Redux/Actions/EventosInscritos/EventosInscritos'
 import cogoToast from 'cogo-toast';
 import config from '../../config'
+import { 
+    Flex, Text
+} from '@chakra-ui/react';
 
 const TablaEventDisp = (props) => {
 
@@ -115,7 +118,7 @@ const TablaEventDisp = (props) => {
             render: (info) => (
                 <div
                     onClick={() => {
-                        console.log(info);
+                        // console.log(info);
                         setEventoSeleccionado(info)
                         setMostrarModalPonente(!mostrarModalPonente)
                     }}
@@ -237,6 +240,119 @@ const TablaEventDisp = (props) => {
                     mostrarModal = {mostrarModalHorario}
                     setMostrarModal = {setMostrarModalHorario}
                     eventoSeleccionado = {eventoSeleccionado}
+                    columnas = {
+                        eventoSeleccionado.tipoensenanza == "Presencial"
+                        ?[
+                            {
+                                title: 'Fecha y Hora',
+                                key: 'fechayhora',
+                                render: _info => (
+                                    <div>
+                                        <Flex align='center'>
+                                            <Text >
+                                                { _info.fecha +" "+ _info.hora.split(":")[0]+":"+_info.hora.split(":")[1]}
+                                            </Text>
+                                        </Flex>
+                                    </div>
+                                )
+                            },
+                            {
+                                title: 'Sede',
+                                key: 'sede',
+                                render: _info => (
+                                    <div>
+                                        <Flex align='center'>
+                                            <Text 
+                                                style={{
+                                                    whiteSpace: 'nowrap',
+                                                    overflow: 'hidden',
+                                                    textOverflow : 'ellipsis',
+                                                    width : '100px'
+                                                }}
+                                                title={_info.sede}
+                                            >
+                                                { _info.sede }
+                                            </Text>
+                                        </Flex>
+                                    </div>
+                                )
+                            },
+                            {
+                                title: 'Lugar',
+                                key: 'lugar',
+                                render: _info => (
+                                    <div>
+                                        <Flex align='center'>
+                                            <Text 
+                                                style={{
+                                                    whiteSpace: 'nowrap',
+                                                    overflow: 'hidden',
+                                                    textOverflow : 'ellipsis',
+                                                    width : '200px'
+                                                }}
+                                                title={_info.lugar}
+                                            >
+                                                { _info.lugar }
+                                            </Text>
+                                        </Flex>
+                                    </div>
+                                )
+                            },
+                        ]
+                        :[
+                            {
+                                title: 'Item',
+                                dataIndex: 'item',
+                                key: 'item',
+                                render: (text) => <a>{text}</a>,
+                            },
+                            {
+                                title: 'Fecha y Hora',
+                                key: 'fechayhora',
+                                render: _info => (
+                                    <div>
+                                        <Flex align='center'>
+                                            <Text >
+                                                { _info.fecha +" "+ _info.hora.split(":")[0]+":"+_info.hora.split(":")[1]}
+                                            </Text>
+                                        </Flex>
+                                    </div>
+                                )
+                            },
+                            {
+                                title: 'Zoom',
+                                key: 'linkzoom',
+                                render: _info => (
+                                    <div>
+                                        <Flex align='center'>
+                                            <Text 
+                                                style={{
+                                                    whiteSpace: 'nowrap',
+                                                    overflow: 'hidden',
+                                                    textOverflow : 'ellipsis',
+                                                    width : '200px'
+                                                }}
+                                                title={_info.linkzoom}
+                                            >
+                                                <a
+                                                    style={{
+                                                        cursor: 'pointer',
+                                                        color: 'blue',
+                                                        textDecoration: 'underline'
+                                                    }}
+                                                    href={_info?.linkzoom }
+                                                    target="_blank" 
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    { _info.linkzoom }
+                                                </a>
+                                            </Text>
+                                        </Flex>
+                                    </div>
+                                )
+                            },
+                        ]
+                    }
                 />
                 :null
             }
@@ -244,6 +360,9 @@ const TablaEventDisp = (props) => {
             <Modal
                 title="Confirmación"
                 visible={mostrarConfirmacion}
+                onCancel={() => {
+                    setMostrarConfirmacion(!mostrarConfirmacion)
+                }}
                 footer={[
                     <Button 
                         key="back" 
@@ -290,7 +409,8 @@ const TablaEventDisp = (props) => {
                 title="Flyer"
                 visible={mostrarFlyer}
                 width={"85%"}
-                style={{ top: 20 }}
+                centered
+                // style={{ top: 20 }}
                 footer={[
                     <Button 
                         key="back" 
@@ -308,7 +428,7 @@ const TablaEventDisp = (props) => {
                     // src={"http://192.168.100.16:8003/public//mostrar-flyter-evento/evento1-fFa6C.pdf"}
                     style={{
                         width:'100%',
-                        height:'570px'
+                        height:'80vh'
                     }}
                 >
 

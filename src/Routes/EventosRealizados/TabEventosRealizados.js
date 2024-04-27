@@ -129,7 +129,7 @@ const TabEventosRealizados = (props) => {
             render: (info) => (
                 <div
                     onClick={() => {
-                        setEventoSeleccionado(info)
+                        setEventoSeleccionado(info.eventos)
                         setMostrarModalPonente(!mostrarModalPonente)
                     }}
                     style={{
@@ -160,7 +160,7 @@ const TabEventosRealizados = (props) => {
             render: (info) => (
                 <div
                     onClick={() => {
-                        setEventoSeleccionado(info)
+                        setEventoSeleccionado(info.eventos)
                         setMostrarModalHorario(!mostrarModalHorario)
                     }}
                     style={{
@@ -179,7 +179,7 @@ const TabEventosRealizados = (props) => {
             render: (info) => (
                 <div
                     onClick={() => {
-                        setEventoSeleccionado(info)
+                        setEventoSeleccionado(info.eventos)
                         setMostrarModalAsistencia(!mostrarModalHorario)  
                     }}
                     style={{

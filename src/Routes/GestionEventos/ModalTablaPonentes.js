@@ -88,7 +88,7 @@ const ModalTablaPonentes = (props) => {
                     colorScheme='blue'
                     isLoading={loadingGuardar}
                     onClick={async () => {
-                        
+                        setMostrarModal(!mostrarModal)
                     }}
                 >
                     Cerrar

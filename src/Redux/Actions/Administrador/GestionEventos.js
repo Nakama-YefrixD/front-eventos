@@ -8,6 +8,18 @@ import {
     OBTENER_PONENTES_EVENTOS,
     OBTENER_LISTA_PONENTES_EVENTOS
 } from "../../../Constantes/Administrador/GestionEventos";
+import {
+    OBTENER_EVENTOS_DISPONIBLES
+} from '../../../Constantes/EventosDisponibles/EventosDisponibles';
+import {
+    OBTENER_MIS_CERTIFICADOS
+} from '../../../Constantes/MisCertificados/MisCertificados'
+import {
+    OBTENER_MIS_HRS_EXTRACURRICULARES,
+} from '../../../Constantes/HorasExtracurriculares/HorasExtracurriculares'
+import {
+    OBTENER_LISTA_EVENTOS_REALIZADOS
+} from '../../../Constantes/EventosRealizados/EventosRealizados'
 import axios from 'axios';
 
 export const ObtenerGestionEventosReducer = (estado = null, fecha = null) => async ( dispatch ) => {
@@ -157,10 +169,19 @@ export const EliminarItemListaFechasEventosReducer = (pos, borrartodo = false) =
     })
 }
 
-export const EditarListaFechasEventosReducer = (fecha, pos) => async ( dispatch, getState ) =>  {
+export const EditarListaFechasEventosReducer = (tipoCampo, data, pos) => async ( dispatch, getState ) =>  {
 
     let rex_lista_fechas_eventos = getState().adminGestionEventos.rex_lista_fechas_eventos
-    rex_lista_fechas_eventos[pos]['fecha'] = fecha
+    
+    if(tipoCampo == "fecha"){
+        rex_lista_fechas_eventos[pos]['fecha'] = data
+    }else if(tipoCampo == "sede"){
+        rex_lista_fechas_eventos[pos]['sede'] = data
+    }else if(tipoCampo == "lugar"){
+        rex_lista_fechas_eventos[pos]['lugar'] = data
+    }else if(tipoCampo == "linkzzom"){
+        rex_lista_fechas_eventos[pos]['linkzzom'] = data
+    }
 
     dispatch({
         type: EDITAR_LISTA_FECHAS_EVENTOS,
@@ -322,6 +343,10 @@ export const EditarEventoReducer = (evento, archivo, fileCertificado) => async (
 
 export const ObtenerFechasEventosReducer = (evento) => async (dispatch, getState) => {
 
+    let rex_lista_eventos_realizados = getState().eventosRealizados.rex_lista_eventos_realizados
+    let rex_lista_mis_hrs_extracurriculares = getState().horasExtracurriculares.rex_lista_mis_hrs_extracurriculares
+    let rex_lista_mis_certificados = getState().misCertificados.rex_lista_mis_certificados
+    let rex_lista_eventos_disponibles = getState().eventosDisponibles.rex_lista_eventos_disponibles
     let rex_lista_gestion_eventos = getState().adminGestionEventos.rex_lista_gestion_eventos
     evento.idevento = evento.id
 
@@ -335,7 +360,10 @@ export const ObtenerFechasEventosReducer = (evento) => async (dispatch, getState
                 'usu_token'	   : localStorage.getItem("usutoken"),
             },
             body: JSON.stringify({
-                "req_evento" : evento
+                "req_evento" : evento,
+                "lista_eventos" : rex_lista_gestion_eventos,
+                "lista_eventos_eventos_disponibles" : rex_lista_eventos_disponibles,
+                "lista_eventos_mis_certificados" : rex_lista_mis_certificados,
             }),
         }
     )
@@ -347,12 +375,51 @@ export const ObtenerFechasEventosReducer = (evento) => async (dispatch, getState
             payload : data.data
         })
 
-        rex_lista_gestion_eventos.find(evt => evt.id == evento.id).fechas = data.data
+        // Actualizar las fechas de la data de Eventos disponibles
+        // Gestion de Eventos
+        if(rex_lista_gestion_eventos.length > 0){
+            rex_lista_gestion_eventos.find(evt => evt.id == evento.id).fechas = data.data
+            dispatch({
+                type: OBTENER_LISTA_GESTION_EVENTOS,
+                payload : rex_lista_gestion_eventos
+            })
+        }
 
-        dispatch({
-            type: OBTENER_LISTA_GESTION_EVENTOS,
-            payload : rex_lista_gestion_eventos
-        })
+        // Eventos disponibles
+        if(rex_lista_eventos_disponibles.length > 0){
+            rex_lista_eventos_disponibles.find(evt => evt.id == evento.id).fechas = data.data
+            dispatch({
+                type: OBTENER_EVENTOS_DISPONIBLES,
+                payload : rex_lista_eventos_disponibles
+            })
+        }
+
+        // Eventos Certificados
+        if(rex_lista_mis_certificados.length > 0){
+            rex_lista_mis_certificados.find(evt => evt.eventos?.id == evento.id).eventos.fechas = data.data
+            dispatch({
+                type: OBTENER_MIS_CERTIFICADOS,
+                payload : rex_lista_mis_certificados
+            })
+        }
+
+        // Horas Extracurriculares
+        if( rex_lista_mis_hrs_extracurriculares.length > 0 ){
+            rex_lista_mis_hrs_extracurriculares.find(evt => evt.eventos?.id == evento.id).eventos.fechas = data.data
+            dispatch({
+                type: OBTENER_MIS_HRS_EXTRACURRICULARES,
+                payload : rex_lista_mis_hrs_extracurriculares
+            })
+        }
+
+        // Asistencias
+        if( rex_lista_eventos_realizados.length > 0 ){
+            rex_lista_eventos_realizados.find(evt => evt.eventos?.id == evento.id).eventos.fechas = data.data
+            dispatch({
+                type: OBTENER_LISTA_EVENTOS_REALIZADOS,
+                payload : rex_lista_eventos_realizados
+            })
+        }
         
     }).catch((error)=> {
         console.log(error)

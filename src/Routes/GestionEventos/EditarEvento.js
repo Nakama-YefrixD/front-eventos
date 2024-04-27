@@ -286,109 +286,202 @@ const EditarEvento = (props) => {
                         {
                             eventoSeleccionado?.fechas?.map((lfecha, pos) => {
                                 return (
-                                    <SimpleGrid 
-                                        columns={{ base: 1, md: 2 }} gap='20px'
-                                        style={{
-                                            marginBottom:'-5px',
-                                            marginTop:'0px'
-                                        }}
-                                    >
-                                        <div style={{display: 'flex'}} >
-                                            <div
-                                                style={{
-                                                    alignSelf: "center",
-                                                    marginRight:'5px'
-                                                }}
-                                            >
-                                                {(pos+1)+")"}
-                                            </div>
-                                            <div>
-                                                <Input 
-                                                    placeholder="Fecha"
-                                                    size="md"
-                                                    type="datetime-local"
-                                                    style={{
-                                                        border: '1px solid #0C0F59',
-                                                        marginRight:'10px'
-                                                    }}
-                                                    value={lfecha.fechora}
-                                                    onChange={(e) => {
-                                                        let nuevasFechas = eventoSeleccionado?.fechas?.find(lf => lf.id == lfecha.id)
-                                                        nuevasFechas.fechora = e.target.value
-                                                        nuevasFechas.fecha = e.target.value
-
-                                                        setEventoSeleccionado({
-                                                            ...eventoSeleccionado,
-                                                            edito : true
-                                                        })
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
-                                        
-                                        <div
+                                    <>
+                                        <SimpleGrid 
+                                            columns={{ base: 1, md: 2 }} gap='20px'
                                             style={{
-                                                alignSelf: "center"
+                                                marginBottom:'-5px',
+                                                marginTop:'0px'
                                             }}
                                         >
+                                            <div style={{display: 'flex'}} >
+                                                <div
+                                                    style={{
+                                                        alignSelf: "center",
+                                                        marginRight:'5px'
+                                                    }}
+                                                >
+                                                    {(pos+1)+")"}
+                                                </div>
+                                                <div>
+                                                    <Input 
+                                                        placeholder="Fecha"
+                                                        size="md"
+                                                        type="datetime-local"
+                                                        style={{
+                                                            border: '1px solid #0C0F59',
+                                                            marginRight:'10px'
+                                                        }}
+                                                        value={lfecha.fechora}
+                                                        onChange={(e) => {
+                                                            let nuevasFechas = eventoSeleccionado?.fechas?.find(lf => lf.id == lfecha.id)
+                                                            nuevasFechas.fechora = e.target.value
+                                                            nuevasFechas.fecha = e.target.value
 
-                                            {
-                                                eventoSeleccionado.recurrente == true
-                                                ?pos == 0
-                                                    ?<div
-                                                        style={{
-                                                            borderRadius: '100%',
-                                                            background: '#0C0F59',
-                                                            width: '25px',
-                                                            height: '25px',
-                                                            cursor: 'pointer',
-                                                            display: "flex",
-                                                            alignItems: "center",
-                                                            justifyContent: "center",
-                                                            color: "white",
-                                                            fontSize:'12px'
-                                                        }}
-                                                        onClick={() => {
-                                                            eventoSeleccionado?.fechas?.push({
-                                                                fecha : null,
-                                                                id : Math.random()
-                                                            })
                                                             setEventoSeleccionado({
                                                                 ...eventoSeleccionado,
                                                                 edito : true
                                                             })
                                                         }}
-                                                    >
-                                                        <AddIcon />
-                                                    </div>
-                                                    :<div
-                                                        style={{
-                                                            borderRadius: '100%',
-                                                            background: '#E53E3E',
-                                                            width: '25px',
-                                                            height: '25px',
-                                                            cursor: 'pointer',
-                                                            display: "flex",
-                                                            alignItems: "center",
-                                                            justifyContent: "center",
-                                                            color: "white",
-                                                            fontSize:'12px'
-                                                        }}
-                                                        onClick={() => {
-                                                            eventoSeleccionado?.fechas?.splice(pos, 1)
-                                                            setEventoSeleccionado({
-                                                                ...eventoSeleccionado,
-                                                                edito : true
-                                                            })
-                                                        }}
-                                                    >
-                                                        <MinusIcon />
-                                                    </div>
-                                                :null
-                                            }
+                                                    />
+                                                </div>
+                                            </div>
                                             
-                                        </div>
-                                    </SimpleGrid>
+                                            <div
+                                                style={{
+                                                    alignSelf: "center"
+                                                }}
+                                            >
+
+                                                {
+                                                    eventoSeleccionado.recurrente == true
+                                                    ?pos == 0
+                                                        ?<div
+                                                            style={{
+                                                                borderRadius: '100%',
+                                                                background: '#0C0F59',
+                                                                width: '25px',
+                                                                height: '25px',
+                                                                cursor: 'pointer',
+                                                                display: "flex",
+                                                                alignItems: "center",
+                                                                justifyContent: "center",
+                                                                color: "white",
+                                                                fontSize:'12px'
+                                                            }}
+                                                            onClick={() => {
+                                                                eventoSeleccionado?.fechas?.push({
+                                                                    fecha : null,
+                                                                    id : Math.random()
+                                                                })
+                                                                setEventoSeleccionado({
+                                                                    ...eventoSeleccionado,
+                                                                    edito : true
+                                                                })
+                                                            }}
+                                                        >
+                                                            <AddIcon />
+                                                        </div>
+                                                        :<div
+                                                            style={{
+                                                                borderRadius: '100%',
+                                                                background: '#E53E3E',
+                                                                width: '25px',
+                                                                height: '25px',
+                                                                cursor: 'pointer',
+                                                                display: "flex",
+                                                                alignItems: "center",
+                                                                justifyContent: "center",
+                                                                color: "white",
+                                                                fontSize:'12px'
+                                                            }}
+                                                            onClick={() => {
+                                                                eventoSeleccionado?.fechas?.splice(pos, 1)
+                                                                setEventoSeleccionado({
+                                                                    ...eventoSeleccionado,
+                                                                    edito : true
+                                                                })
+                                                            }}
+                                                        >
+                                                            <MinusIcon />
+                                                        </div>
+                                                    :null
+                                                }
+                                                
+                                            </div>
+                                        </SimpleGrid>
+
+                                            
+
+                                        {/* SELECCIONAR SEDE Y LUGAR PARA CADA FECHA */}
+                                        {
+                                            eventoSeleccionado.tipoensenanza == "Presencial"
+                                            ?<SimpleGrid 
+                                                columns={{ base: 1, md: 2 }} gap='20px'
+                                                style={{
+                                                    marginBottom:'20px',
+                                                    marginTop:'-5px',
+                                                    borderBottom: '1px solid gray',
+                                                    paddingBottom:'10px'
+                                                }}
+                                            >
+                                                <div>
+                                                    <div>
+                                                        Sede:
+                                                    </div>
+                                                    <Select 
+                                                        placeholder='Seleccionar Sede'
+                                                        size='sm' 
+                                                        variant='filled'
+                                                        onChange={(e) => {
+                                                            let nuevasFechas = eventoSeleccionado?.fechas?.find(lf => lf.id == lfecha.id)
+                                                            nuevasFechas.sede = e.target.value
+
+                                                            setEventoSeleccionado({
+                                                                ...eventoSeleccionado,
+                                                                edito : true
+                                                            })
+                                                        }}
+                                                        value={lfecha.sede}
+                                                    >
+                                                        <option 
+                                                            value={"sed1"}
+                                                        >
+                                                            {"Sede 1"}
+                                                        </option>
+
+                                                        <option 
+                                                            value={"sed2"}
+                                                        >
+                                                            {"Sede 2"}
+                                                        </option>
+                                                    </Select>
+                                                </div>
+                                                <div>
+                                                    <div>
+                                                        Lugar:
+                                                    </div>
+                                                    <Input 
+                                                        variant='filled' placeholder='Lugar' 
+                                                        onChange={(e) => {
+                                                            let nuevasFechas = eventoSeleccionado?.fechas?.find(lf => lf.id == lfecha.id)
+                                                            nuevasFechas.lugar = e.target.value
+
+                                                            setEventoSeleccionado({
+                                                                ...eventoSeleccionado,
+                                                                edito : true
+                                                            })
+                                                        }}
+                                                        value={lfecha.lugar}
+                                                    />
+                                                </div>
+                                            </SimpleGrid>
+                                            :<div>
+                                                <div
+                                                    style={{
+                                                        marginTop:'-5px',
+                                                        borderBottom: '1px solid gray',
+                                                        paddingBottom:'10px'
+                                                    }}
+                                                >
+                                                    <Input 
+                                                        variant='filled' placeholder='Link de Zoom' 
+                                                        onChange={(e) => {
+                                                            let nuevasFechas = eventoSeleccionado?.fechas?.find(lf => lf.id == lfecha.id)
+                                                            nuevasFechas.linkzoom = e.target.value
+
+                                                            setEventoSeleccionado({
+                                                                ...eventoSeleccionado,
+                                                                edito : true
+                                                            })
+                                                        }}
+                                                        value={lfecha.linkzoom}
+                                                    />
+                                                </div>   
+                                            </div>
+                                        }
+
+                                    </>
                                 )
                             })
                         }
@@ -566,7 +659,7 @@ const EditarEvento = (props) => {
 
                         </div>
                         
-                        {
+                        {/* {
                             eventoSeleccionado.tipoensenanza == "Presencial"
                             ?<div
                                 style={{
@@ -624,30 +717,6 @@ const EditarEvento = (props) => {
                                             }}
                                             value={eventoSeleccionado.auditoria}
                                         />
-                                        {/* <Select 
-                                            placeholder='Seleccionar Auditorio'
-                                            size='sm' 
-                                            variant='filled'
-                                            onChange={(e) => {
-                                                setEventoSeleccionado({
-                                                    ...eventoSeleccionado,
-                                                    auditoria : e.target.value
-                                                })
-                                            }}
-                                            value={eventoSeleccionado.auditoria}
-                                        >
-                                            <option 
-                                                value={"aud1"}
-                                            >
-                                                {"Auditoria 1"}
-                                            </option>
-
-                                            <option 
-                                                value={"aud2"}
-                                            >
-                                                {"Auditoria 2"}
-                                            </option>
-                                        </Select> */}
                                     </div>
                                 </SimpleGrid>
                             </div>
@@ -672,7 +741,7 @@ const EditarEvento = (props) => {
                                     />
                                 </div>   
                             </>
-                        }
+                        } */}
 
                         <SimpleGrid 
                             columns={{ base: 1, md: 2 }} gap='20px'

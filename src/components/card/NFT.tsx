@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { IoHeart, IoHeartOutline } from 'react-icons/io5';
 import config from '../../config'
 import MdInscribirse from 'components/modal/MdInscribirse';
+import 'Styles/Nft.css'
 
 export default function NFT(props: {
 	image: string;
@@ -43,16 +44,22 @@ export default function NFT(props: {
 							h={{ base: '100%', '3xl': '100%' }}
 							borderRadius='20px'
 						/> */}
-						<iframe
-							src={config.api_public+linkflyer}
-							// 'http://localhost:8003/public/mostrar-flyter-evento/evento1.pdf'
-							style={{
-								width:'100%',
-								height:'180px'
-							}}
-						>
-
-						</iframe>
+						{
+							linkflyer.includes(".pdf")
+							?<iframe
+								src={config.api_public+linkflyer}
+								// 'http://localhost:8003/public/mostrar-flyter-evento/evento1.pdf'
+								style={{
+									width:'100%',
+									// height:'180px'
+									height:'250px'
+								}}
+							>
+							</iframe>
+							:<div className="contenedor_NFT_home">
+								<img className="imagen_NFT_home" src={config.api_public+linkflyer} alt="Imagen" />
+							</div>
+						}
 						{
 							showIcon == true
 							?<Button

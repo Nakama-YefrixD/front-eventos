@@ -257,6 +257,119 @@ const GestionEventos = () => {
                     mostrarModal = {mostrarModalHorario}
                     setMostrarModal = {setMostrarModalHorario}
                     eventoSeleccionado = {eventoSeleccionado}
+                    columnas = {
+                        eventoSeleccionado.tipoensenanza == "Presencial"
+                        ?[
+                            {
+                                title: 'Fecha y Hora',
+                                key: 'fechayhora',
+                                render: _info => (
+                                    <div>
+                                        <Flex align='center'>
+                                            <Text >
+                                                { _info.fecha +" "+ _info.hora.split(":")[0]+":"+_info.hora.split(":")[1]}
+                                            </Text>
+                                        </Flex>
+                                    </div>
+                                )
+                            },
+                            {
+                                title: 'Sede',
+                                key: 'sede',
+                                render: _info => (
+                                    <div>
+                                        <Flex align='center'>
+                                            <Text 
+                                                style={{
+                                                    whiteSpace: 'nowrap',
+                                                    overflow: 'hidden',
+                                                    textOverflow : 'ellipsis',
+                                                    width : '100px'
+                                                }}
+                                                title={_info.sede}
+                                            >
+                                                { _info.sede }
+                                            </Text>
+                                        </Flex>
+                                    </div>
+                                )
+                            },
+                            {
+                                title: 'Lugar',
+                                key: 'lugar',
+                                render: _info => (
+                                    <div>
+                                        <Flex align='center'>
+                                            <Text 
+                                                style={{
+                                                    whiteSpace: 'nowrap',
+                                                    overflow: 'hidden',
+                                                    textOverflow : 'ellipsis',
+                                                    width : '200px'
+                                                }}
+                                                title={_info.lugar}
+                                            >
+                                                { _info.lugar }
+                                            </Text>
+                                        </Flex>
+                                    </div>
+                                )
+                            },
+                        ]
+                        :[
+                            {
+                                title: 'Item',
+                                dataIndex: 'item',
+                                key: 'item',
+                                render: (text) => <a>{text}</a>,
+                            },
+                            {
+                                title: 'Fecha y Hora',
+                                key: 'fechayhora',
+                                render: _info => (
+                                    <div>
+                                        <Flex align='center'>
+                                            <Text >
+                                                { _info.fecha +" "+ _info.hora.split(":")[0]+":"+_info.hora.split(":")[1]}
+                                            </Text>
+                                        </Flex>
+                                    </div>
+                                )
+                            },
+                            {
+                                title: 'Zoom',
+                                key: 'linkzoom',
+                                render: _info => (
+                                    <div>
+                                        <Flex align='center'>
+                                            <Text 
+                                                style={{
+                                                    whiteSpace: 'nowrap',
+                                                    overflow: 'hidden',
+                                                    textOverflow : 'ellipsis',
+                                                    width : '200px'
+                                                }}
+                                                title={_info.linkzoom}
+                                            >
+                                                <a
+                                                    style={{
+                                                        cursor: 'pointer',
+                                                        color: 'blue',
+                                                        textDecoration: 'underline'
+                                                    }}
+                                                    href={_info?.linkzoom }
+                                                    target="_blank" 
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    { _info.linkzoom }
+                                                </a>
+                                            </Text>
+                                        </Flex>
+                                    </div>
+                                )
+                            },
+                        ]
+                    }
                 />
                 :null
             }
