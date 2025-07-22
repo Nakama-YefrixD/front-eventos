@@ -1,528 +1,567 @@
 import config from '../../../config'
-import { 
-    OBTENER_LISTA_GESTION_EVENTOS,
-    EVENTO_SELECCIONADO_ADMINISTRADOR,
-    EDITAR_LISTA_FECHAS_EVENTOS,
-    OBTENER_FECHAS_EVENTOS,
-    OBTENER_ASISTENCIAS_EVENTO,
-    OBTENER_PONENTES_EVENTOS,
-    OBTENER_LISTA_PONENTES_EVENTOS
+import {
+  OBTENER_LISTA_GESTION_EVENTOS,
+  EVENTO_SELECCIONADO_ADMINISTRADOR,
+  EDITAR_LISTA_FECHAS_EVENTOS,
+  OBTENER_FECHAS_EVENTOS,
+  OBTENER_ASISTENCIAS_EVENTO,
+  OBTENER_PONENTES_EVENTOS,
+  OBTENER_LISTA_PONENTES_EVENTOS
 } from "../../../Constantes/Administrador/GestionEventos";
 import {
-    OBTENER_EVENTOS_DISPONIBLES
+  OBTENER_EVENTOS_DISPONIBLES
 } from '../../../Constantes/EventosDisponibles/EventosDisponibles';
 import {
-    OBTENER_MIS_CERTIFICADOS
+  OBTENER_MIS_CERTIFICADOS
 } from '../../../Constantes/MisCertificados/MisCertificados'
 import {
-    OBTENER_MIS_HRS_EXTRACURRICULARES,
+  OBTENER_MIS_HRS_EXTRACURRICULARES,
 } from '../../../Constantes/HorasExtracurriculares/HorasExtracurriculares'
 import {
-    OBTENER_LISTA_EVENTOS_REALIZADOS
+  OBTENER_LISTA_EVENTOS_REALIZADOS
 } from '../../../Constantes/EventosRealizados/EventosRealizados'
 import axios from 'axios';
 
-export const ObtenerGestionEventosReducer = (estado = null, fecha = null) => async ( dispatch ) => {
+export const ObtenerGestionEventosReducer = (estado = null, fecha = null) => async (dispatch) => {
 
-    await fetch(config.api+'administrador/mostrar-eventos',
-        {
-            mode:'cors',
-            method: 'POST',
-            headers: {
-                'Accept' : 'application/json',
-                'Content-type' : 'application/json',
-                'usu_token'	   : localStorage.getItem("usutoken"),
-            },
-            body: JSON.stringify({
-                "req_estado" : estado,
-                "req_fecha" : fecha,
-            }),
-        }
-    )
-    .then( async res => {return res.json()})
+  await fetch(config.api + 'administrador/mostrar-eventos',
+    {
+      mode: 'cors',
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+        'usu_token': localStorage.getItem("usutoken"),
+      },
+      body: JSON.stringify({
+        "req_estado": estado,
+        "req_fecha": fecha,
+      }),
+    }
+  )
+    .then(async res => { return res.json() })
     .then(data => {
 
-        dispatch({
-            type: OBTENER_LISTA_GESTION_EVENTOS,
-            payload : data.data
-        })
-        
-    }).catch((error)=> {
-        console.log(error)
+      dispatch({
+        type: OBTENER_LISTA_GESTION_EVENTOS,
+        payload: data.data
+      })
+
+    }).catch((error) => {
+      console.log(error)
     })
-    
+
 }
 
-export const RegistrarEventoReducer = (evento) => async ( dispatch ) => {
+export const RegistrarEventoReducer = (evento) => async (dispatch) => {
 
-    let dat_registrar = {}
+  let dat_registrar = {}
 
-    await fetch(config.api+'administrador/crear-evento',
-        {
-            mode:'cors',
-            method: 'POST',
-            headers: {
-                'Accept' : 'application/json',
-                'Content-type' : 'application/json',
-                'usu_token'	   : localStorage.getItem("usutoken"),
-            },
-            body: JSON.stringify(evento),
-        }
-    )
-    .then( async res => {return res.json()})
+  await fetch(config.api + 'administrador/crear-evento',
+    {
+      mode: 'cors',
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+        'usu_token': localStorage.getItem("usutoken"),
+      },
+      body: JSON.stringify(evento),
+    }
+  )
+    .then(async res => { return res.json() })
     .then(data => {
 
-        dat_registrar = {
-            "respuesta" : data.respuesta,
-            "mensaje" : data.message
-        }
-        
-    }).catch((error)=> {
-        console.log(error)
+      dat_registrar = {
+        "respuesta": data.respuesta,
+        "mensaje": data.message
+      }
+
+    }).catch((error) => {
+      console.log(error)
     })
 
-    return dat_registrar
+  return dat_registrar
 }
 
-export const SeleccionarEventoReducer = (evento) => async ( dispatch ) => {
-    dispatch({
-        type: EVENTO_SELECCIONADO_ADMINISTRADOR,
-        payload : evento
-    })
+export const SeleccionarEventoReducer = (evento) => async (dispatch) => {
+  dispatch({
+    type: EVENTO_SELECCIONADO_ADMINISTRADOR,
+    payload: evento
+  })
 }
 
-export const EliminarEventoReducer = (idevento) => async ( dispatch ) => {
+export const EliminarEventoReducer = (idevento) => async (dispatch) => {
 
-    let dat_registrar = {}
+  let dat_registrar = {}
 
-    await fetch(config.api+'administrador/eliminar-evento',
-        {
-            mode:'cors',
-            method: 'POST',
-            headers: {
-                'Accept' : 'application/json',
-                'Content-type' : 'application/json',
-                'usu_token'	   : localStorage.getItem("usutoken"),
-            },
-            body: JSON.stringify({
-                "req_id" : idevento
-            }),
-        }
-    )
-    .then( async res => {return res.json()})
+  await fetch(config.api + 'administrador/eliminar-evento',
+    {
+      mode: 'cors',
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+        'usu_token': localStorage.getItem("usutoken"),
+      },
+      body: JSON.stringify({
+        "req_id": idevento
+      }),
+    }
+  )
+    .then(async res => { return res.json() })
     .then(async data => {
 
-        dat_registrar = data
-        await dispatch(ObtenerGestionEventosReducer())
+      dat_registrar = data
+      await dispatch(ObtenerGestionEventosReducer())
 
-    }).catch((error)=> {
-        console.log(error)
+    }).catch((error) => {
+      console.log(error)
     })
 
-    return dat_registrar
+  return dat_registrar
 }
 
-export const ActualizarDataEventoSeleccionadoReducer = (eventoSeleccionado) => async ( dispatch, getState ) =>  {
+export const ActualizarDataEventoSeleccionadoReducer = (eventoSeleccionado) => async (dispatch, getState) => {
 
-    const rex_lista_gestion_eventos = getState().adminGestionEventos.rex_lista_gestion_eventos
-    
-    console.log(eventoSeleccionado);
+  const rex_lista_gestion_eventos = getState().adminGestionEventos.rex_lista_gestion_eventos
 
-    if(!eventoSeleccionado.ponentes || eventoSeleccionado.edito == true){
-        dispatch(ObtenerPonentesEventosReducer(eventoSeleccionado))
-    }
+  console.log(eventoSeleccionado);
 
-    if(!eventoSeleccionado.fechas || eventoSeleccionado.edito == true){
-        dispatch(ObtenerFechasEventosReducer(eventoSeleccionado))
-    }
+  if (!eventoSeleccionado.ponentes || eventoSeleccionado.edito == true) {
+    dispatch(ObtenerPonentesEventosReducer(eventoSeleccionado))
+  }
 
-    // dispatch({
-    //     type: EDITAR_LISTA_FECHAS_EVENTOS,
-    //     payload: rex_lista_fechas_eventos
-    // })
+  if (!eventoSeleccionado.fechas || eventoSeleccionado.edito == true) {
+    dispatch(ObtenerFechasEventosReducer(eventoSeleccionado))
+  }
+
+  // dispatch({
+  //     type: EDITAR_LISTA_FECHAS_EVENTOS,
+  //     payload: rex_lista_fechas_eventos
+  // })
 }
 
-export const AgregarListaFechasEventosReducer = (data) => async ( dispatch, getState ) =>  {
+export const AgregarListaFechasEventosReducer = (data) => async (dispatch, getState) => {
 
-    let rex_lista_fechas_eventos = getState().adminGestionEventos.rex_lista_fechas_eventos
-    rex_lista_fechas_eventos.push(data)
+  let rex_lista_fechas_eventos = getState().adminGestionEventos.rex_lista_fechas_eventos
+  rex_lista_fechas_eventos.push(data)
 
-    dispatch({
-        type: EDITAR_LISTA_FECHAS_EVENTOS,
-        payload: rex_lista_fechas_eventos
-    })
+  dispatch({
+    type: EDITAR_LISTA_FECHAS_EVENTOS,
+    payload: rex_lista_fechas_eventos
+  })
 }
 
-export const EliminarItemListaFechasEventosReducer = (pos, borrartodo = false) => async ( dispatch, getState ) =>  {
+export const EliminarItemListaFechasEventosReducer = (pos, borrartodo = false) => async (dispatch, getState) => {
 
-    let rex_lista_fechas_eventos = getState().adminGestionEventos.rex_lista_fechas_eventos
-    
-    if(borrartodo){
-        rex_lista_fechas_eventos.splice(1, 99)
-    }else{
-        rex_lista_fechas_eventos.splice(pos, 1)
-    }
+  let rex_lista_fechas_eventos = getState().adminGestionEventos.rex_lista_fechas_eventos
 
-    dispatch({
-        type: EDITAR_LISTA_FECHAS_EVENTOS,
-        payload: rex_lista_fechas_eventos
-    })
+  if (borrartodo) {
+    rex_lista_fechas_eventos.splice(1, 99)
+  } else {
+    rex_lista_fechas_eventos.splice(pos, 1)
+  }
+
+  dispatch({
+    type: EDITAR_LISTA_FECHAS_EVENTOS,
+    payload: rex_lista_fechas_eventos
+  })
 }
 
-export const EditarListaFechasEventosReducer = (tipoCampo, data, pos) => async ( dispatch, getState ) =>  {
+export const EditarListaFechasEventosReducer = (tipoCampo, data, pos) => async (dispatch, getState) => {
 
-    let rex_lista_fechas_eventos = getState().adminGestionEventos.rex_lista_fechas_eventos
-    
-    if(tipoCampo == "fecha"){
-        rex_lista_fechas_eventos[pos]['fecha'] = data
-    }else if(tipoCampo == "sede"){
-        rex_lista_fechas_eventos[pos]['sede'] = data
-    }else if(tipoCampo == "lugar"){
-        rex_lista_fechas_eventos[pos]['lugar'] = data
-    }else if(tipoCampo == "linkzzom"){
-        rex_lista_fechas_eventos[pos]['linkzzom'] = data
-    }
+  let rex_lista_fechas_eventos = getState().adminGestionEventos.rex_lista_fechas_eventos
 
-    dispatch({
-        type: EDITAR_LISTA_FECHAS_EVENTOS,
-        payload: rex_lista_fechas_eventos
-    })
+  if (tipoCampo == "fecha") {
+    rex_lista_fechas_eventos[pos]['fecha'] = data
+  } else if (tipoCampo == "sede") {
+    rex_lista_fechas_eventos[pos]['sede'] = data
+  } else if (tipoCampo == "lugar") {
+    rex_lista_fechas_eventos[pos]['lugar'] = data
+  } else if (tipoCampo == "linkzzom") {
+    rex_lista_fechas_eventos[pos]['linkzzom'] = data
+  }
+
+  dispatch({
+    type: EDITAR_LISTA_FECHAS_EVENTOS,
+    payload: rex_lista_fechas_eventos
+  })
 }
 
 export const AgregarEventoReducer = (evento, archivo, fileCertificado) => async (dispatch, getState) => {
-    
-    let dat_registrar = {}
 
-    const formData = new FormData();
-    formData.append('archivo', archivo);
-    formData.append('fileCertificado', fileCertificado);
-    formData.append('req_carrera', evento.req_carrera)
-    formData.append('req_recurrente', evento.req_recurrente)
-    formData.append('req_tipoensenanza', evento.req_tipoensenanza)
-    formData.append('req_clasificacionevento', evento.req_clasificacionevento)
-    formData.append('req_tipoevento', evento.req_tipoevento)
-    formData.append('req_organizacion', evento.req_organizacion)
-    formData.append('req_zoom', evento.req_zoom)
-    formData.append('req_linkEncuesta', evento.req_linkEncuesta)
-    formData.append('req_linkflyer', evento.req_linkflyer)
-    formData.append('req_sede', evento.req_sede)
-    formData.append('req_auditoria', evento.req_auditoria)
-    formData.append('req_nombre', evento.req_nombre)
-    formData.append('req_fecha', evento.req_fecha)
-    formData.append('req_fechahora', evento.req_fechahora)
-    formData.append('req_estado', evento.req_estado)
-    formData.append('req_ponente', evento.req_ponente)
-    formData.append('req_list_fechas', JSON.stringify(evento.req_list_fechas))
-    formData.append('req_list_ponentes', JSON.stringify(evento.req_list_ponentes))
-    formData.append('req_cupos', evento.req_cupos)
-    formData.append('req_hrsextra', evento.req_hrsextra)
+  let dat_registrar = {}
 
-    await axios.post(config.api+'/administrador/crear-evento', formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-            'usutoken'	   : localStorage.getItem('usutoken'),
-        },
-    })
+  const formData = new FormData();
+  formData.append('archivo', archivo);
+  formData.append('fileCertificado', fileCertificado);
+  formData.append('req_carrera', evento.req_carrera)
+  formData.append('req_recurrente', evento.req_recurrente)
+  formData.append('req_tipoensenanza', evento.req_tipoensenanza)
+  formData.append('req_clasificacionevento', evento.req_clasificacionevento)
+  formData.append('req_tipoevento', evento.req_tipoevento)
+  formData.append('req_organizacion', evento.req_organizacion)
+  formData.append('req_zoom', evento.req_zoom)
+  formData.append('req_linkEncuesta', evento.req_linkEncuesta)
+  formData.append('req_linkflyer', evento.req_linkflyer)
+  formData.append('req_sede', evento.req_sede)
+  formData.append('req_auditoria', evento.req_auditoria)
+  formData.append('req_nombre', evento.req_nombre)
+  formData.append('req_fecha', evento.req_fecha)
+  formData.append('req_fechahora', evento.req_fechahora)
+  formData.append('req_estado', evento.req_estado)
+  formData.append('req_ponente', evento.req_ponente)
+  formData.append('req_list_fechas', JSON.stringify(evento.req_list_fechas))
+  formData.append('req_list_ponentes', JSON.stringify(evento.req_list_ponentes))
+  formData.append('req_cupos', evento.req_cupos)
+  formData.append('req_hrsextra', evento.req_hrsextra)
+
+  await axios.post(config.api + '/administrador/crear-evento', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      'usutoken': localStorage.getItem('usutoken'),
+    },
+  })
     .then(async data => {
-        
-        // console.log("data: ---------------------")
-        // console.log(data)
-        dat_registrar = {
-            "respuesta" : data.data.respuesta,
-            "mensaje" : data.data.message
-        }
 
-        // console.log(dat_registrar)
+      // console.log("data: ---------------------")
+      // console.log(data)
+      dat_registrar = {
+        "respuesta": data.data.respuesta,
+        "mensaje": data.data.message
+      }
 
-        await dispatch(ObtenerGestionEventosReducer())
-        
-        dispatch({
-            type: EDITAR_LISTA_FECHAS_EVENTOS,
-            payload: [{
-                fecha: null
-            }]
-        })
+      // console.log(dat_registrar)
 
-    }).catch((error)=> {
-        console.log(error)
+      await dispatch(ObtenerGestionEventosReducer())
+
+      dispatch({
+        type: EDITAR_LISTA_FECHAS_EVENTOS,
+        payload: [{
+          fecha: null
+        }]
+      })
+
+    }).catch((error) => {
+      console.log(error)
     })
 
-    // await fetch(config.api+'administrador/crear-evento',
-    //     {
-    //         mode:'cors',
-    //         method: 'POST',
-    //         headers: {
-    //             'Accept' : 'application/json',
-    //             'Content-type' : 'application/json',
-    //             'usu_token'	   : localStorage.getItem("usutoken"),
-    //         },
-    //         body: JSON.stringify(evento),
-    //     }
-    // )
-    // .then( async res => {return res.json()})
-    // .then(async data => {
+  // await fetch(config.api+'administrador/crear-evento',
+  //     {
+  //         mode:'cors',
+  //         method: 'POST',
+  //         headers: {
+  //             'Accept' : 'application/json',
+  //             'Content-type' : 'application/json',
+  //             'usu_token'	   : localStorage.getItem("usutoken"),
+  //         },
+  //         body: JSON.stringify(evento),
+  //     }
+  // )
+  // .then( async res => {return res.json()})
+  // .then(async data => {
 
-    //     dat_registrar = {
-    //         "respuesta" : data.respuesta,
-    //         "mensaje" : data.message
-    //     }
+  //     dat_registrar = {
+  //         "respuesta" : data.respuesta,
+  //         "mensaje" : data.message
+  //     }
 
-    //     await dispatch(ObtenerGestionEventosReducer())
-        
-    //     dispatch({
-    //         type: EDITAR_LISTA_FECHAS_EVENTOS,
-    //         payload: [{
-    //             fecha: null
-    //         }]
-    //     })
+  //     await dispatch(ObtenerGestionEventosReducer())
 
-    // }).catch((error)=> {
-    //     console.log(error)
-    // })
-    
+  //     dispatch({
+  //         type: EDITAR_LISTA_FECHAS_EVENTOS,
+  //         payload: [{
+  //             fecha: null
+  //         }]
+  //     })
 
-    return dat_registrar
+  // }).catch((error)=> {
+  //     console.log(error)
+  // })
+
+
+  return dat_registrar
 
 }
 
-export const EditarEventoReducer = (evento, archivo, fileCertificado) => async ( dispatch ) => {
+export const EditarEventoReducer = (evento, archivo, fileCertificado) => async (dispatch) => {
 
-    let dat_registrar = {}
-    
-    const formData = new FormData();
-    formData.append('req_id', evento.req_id);
-    formData.append('archivo', archivo);
-    formData.append('fileCertificado', fileCertificado);
-    formData.append('req_carrera', evento.req_carrera)
-    formData.append('req_recurrente', evento.req_recurrente)
-    formData.append('req_tipoensenanza', evento.req_tipoensenanza)
-    formData.append('req_clasificacionevento', evento.req_clasificacionevento)
-    formData.append('req_tipoevento', evento.req_tipoevento)
-    formData.append('req_organizacion', evento.req_organizacion)
-    formData.append('req_zoom', evento.req_zoom)
-    formData.append('req_linkEncuesta', evento.req_linkEncuesta)
-    formData.append('req_linkflyer', evento.req_linkflyer)
-    formData.append('req_sede', evento.req_sede)
-    formData.append('req_auditoria', evento.req_auditoria)
-    formData.append('req_nombre', evento.req_nombre)
-    formData.append('req_estado', evento.req_estado)
-    formData.append('req_list_fechas', JSON.stringify(evento.req_list_fechas))
-    formData.append('req_list_ponentes', JSON.stringify(evento.req_list_ponentes))
-    formData.append('req_cupos', evento.req_cupos)
-    formData.append('req_hrsextra', evento.req_hrsextra)
+  let dat_registrar = {}
 
-    await axios.post(config.api+'/administrador/editar-evento', formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-            'usutoken'	   : localStorage.getItem('usutoken'),
-        },
-    })
+  const formData = new FormData();
+  formData.append('req_id', evento.req_id);
+  formData.append('archivo', archivo);
+  formData.append('fileCertificado', fileCertificado);
+  formData.append('req_carrera', evento.req_carrera)
+  formData.append('req_recurrente', evento.req_recurrente)
+  formData.append('req_tipoensenanza', evento.req_tipoensenanza)
+  formData.append('req_clasificacionevento', evento.req_clasificacionevento)
+  formData.append('req_tipoevento', evento.req_tipoevento)
+  formData.append('req_organizacion', evento.req_organizacion)
+  formData.append('req_zoom', evento.req_zoom)
+  formData.append('req_linkEncuesta', evento.req_linkEncuesta)
+  formData.append('req_linkflyer', evento.req_linkflyer)
+  formData.append('req_sede', evento.req_sede)
+  formData.append('req_auditoria', evento.req_auditoria)
+  formData.append('req_nombre', evento.req_nombre)
+  formData.append('req_estado', evento.req_estado)
+  formData.append('req_list_fechas', JSON.stringify(evento.req_list_fechas))
+  formData.append('req_list_ponentes', JSON.stringify(evento.req_list_ponentes))
+  formData.append('req_cupos', evento.req_cupos)
+  formData.append('req_hrsextra', evento.req_hrsextra)
+
+  await axios.post(config.api + '/administrador/editar-evento', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      'usutoken': localStorage.getItem('usutoken'),
+    },
+  })
     .then(async data => {
-        
-        dat_registrar = {
-            "respuesta" : data.data.respuesta,
-            "mensaje" : data.data.message
-        }
 
-        await dispatch(ObtenerGestionEventosReducer())
-        
-        dispatch({
-            type: EDITAR_LISTA_FECHAS_EVENTOS,
-            payload: [{
-                fecha: null
-            }]
-        })
+      dat_registrar = {
+        "respuesta": data.data.respuesta,
+        "mensaje": data.data.message
+      }
 
-    }).catch((error)=> {
-        console.log(error)
+      await dispatch(ObtenerGestionEventosReducer())
+
+      dispatch({
+        type: EDITAR_LISTA_FECHAS_EVENTOS,
+        payload: [{
+          fecha: null
+        }]
+      })
+
+    }).catch((error) => {
+      console.log(error)
     })
 
-    return dat_registrar
+  return dat_registrar
 }
 
 
 export const ObtenerFechasEventosReducer = (evento) => async (dispatch, getState) => {
 
-    let rex_lista_eventos_realizados = getState().eventosRealizados.rex_lista_eventos_realizados
-    let rex_lista_mis_hrs_extracurriculares = getState().horasExtracurriculares.rex_lista_mis_hrs_extracurriculares
-    let rex_lista_mis_certificados = getState().misCertificados.rex_lista_mis_certificados
-    let rex_lista_eventos_disponibles = getState().eventosDisponibles.rex_lista_eventos_disponibles
-    let rex_lista_gestion_eventos = getState().adminGestionEventos.rex_lista_gestion_eventos
-    evento.idevento = evento.id
+  let rex_lista_eventos_realizados = getState().eventosRealizados.rex_lista_eventos_realizados
+  let rex_lista_mis_hrs_extracurriculares = getState().horasExtracurriculares.rex_lista_mis_hrs_extracurriculares
+  let rex_lista_mis_certificados = getState().misCertificados.rex_lista_mis_certificados
+  let rex_lista_eventos_disponibles = getState().eventosDisponibles.rex_lista_eventos_disponibles
+  let rex_lista_gestion_eventos = getState().adminGestionEventos.rex_lista_gestion_eventos
+  evento.idevento = evento.id
 
-    await fetch(config.api+'administrador/mostrar-fechas-eventos',
-        {
-            mode:'cors',
-            method: 'POST',
-            headers: {
-                'Accept' : 'application/json',
-                'Content-type' : 'application/json',
-                'usu_token'	   : localStorage.getItem("usutoken"),
-            },
-            body: JSON.stringify({
-                "req_evento" : evento,
-                "lista_eventos" : rex_lista_gestion_eventos,
-                "lista_eventos_eventos_disponibles" : rex_lista_eventos_disponibles,
-                "lista_eventos_mis_certificados" : rex_lista_mis_certificados,
-            }),
-        }
-    )
-    .then( async res => {return res.json()})
+  await fetch(config.api + 'administrador/mostrar-fechas-eventos',
+    {
+      mode: 'cors',
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+        'usu_token': localStorage.getItem("usutoken"),
+      },
+      body: JSON.stringify({
+        "req_evento": evento,
+        "lista_eventos": rex_lista_gestion_eventos,
+        "lista_eventos_eventos_disponibles": rex_lista_eventos_disponibles,
+        "lista_eventos_mis_certificados": rex_lista_mis_certificados,
+      }),
+    }
+  )
+    .then(async res => { return res.json() })
     .then(data => {
 
+      dispatch({
+        type: OBTENER_FECHAS_EVENTOS,
+        payload: data.data
+      })
+
+      // Actualizar las fechas de la data de Eventos disponibles
+      // Gestion de Eventos
+      if (rex_lista_gestion_eventos.length > 0) {
+        rex_lista_gestion_eventos.find(evt => evt.id == evento.id).fechas = data.data
         dispatch({
-            type: OBTENER_FECHAS_EVENTOS,
-            payload : data.data
+          type: OBTENER_LISTA_GESTION_EVENTOS,
+          payload: rex_lista_gestion_eventos
         })
+      }
 
-        // Actualizar las fechas de la data de Eventos disponibles
-        // Gestion de Eventos
-        if(rex_lista_gestion_eventos.length > 0){
-            rex_lista_gestion_eventos.find(evt => evt.id == evento.id).fechas = data.data
-            dispatch({
-                type: OBTENER_LISTA_GESTION_EVENTOS,
-                payload : rex_lista_gestion_eventos
-            })
-        }
+      // Eventos disponibles
+      if (rex_lista_eventos_disponibles.length > 0) {
+        rex_lista_eventos_disponibles.find(evt => evt.id == evento.id).fechas = data.data
+        dispatch({
+          type: OBTENER_EVENTOS_DISPONIBLES,
+          payload: rex_lista_eventos_disponibles
+        })
+      }
 
-        // Eventos disponibles
-        if(rex_lista_eventos_disponibles.length > 0){
-            rex_lista_eventos_disponibles.find(evt => evt.id == evento.id).fechas = data.data
-            dispatch({
-                type: OBTENER_EVENTOS_DISPONIBLES,
-                payload : rex_lista_eventos_disponibles
-            })
-        }
+      // Eventos Certificados
+      if (rex_lista_mis_certificados.length > 0) {
+        rex_lista_mis_certificados.find(evt => evt.eventos?.id == evento.id).eventos.fechas = data.data
+        dispatch({
+          type: OBTENER_MIS_CERTIFICADOS,
+          payload: rex_lista_mis_certificados
+        })
+      }
 
-        // Eventos Certificados
-        if(rex_lista_mis_certificados.length > 0){
-            rex_lista_mis_certificados.find(evt => evt.eventos?.id == evento.id).eventos.fechas = data.data
-            dispatch({
-                type: OBTENER_MIS_CERTIFICADOS,
-                payload : rex_lista_mis_certificados
-            })
-        }
+      // Horas Extracurriculares
+      if (rex_lista_mis_hrs_extracurriculares.length > 0) {
+        rex_lista_mis_hrs_extracurriculares.find(evt => evt.eventos?.id == evento.id).eventos.fechas = data.data
+        dispatch({
+          type: OBTENER_MIS_HRS_EXTRACURRICULARES,
+          payload: rex_lista_mis_hrs_extracurriculares
+        })
+      }
 
-        // Horas Extracurriculares
-        if( rex_lista_mis_hrs_extracurriculares.length > 0 ){
-            rex_lista_mis_hrs_extracurriculares.find(evt => evt.eventos?.id == evento.id).eventos.fechas = data.data
-            dispatch({
-                type: OBTENER_MIS_HRS_EXTRACURRICULARES,
-                payload : rex_lista_mis_hrs_extracurriculares
-            })
-        }
+      // Asistencias
+      if (rex_lista_eventos_realizados.length > 0) {
+        rex_lista_eventos_realizados.find(evt => evt.eventos?.id == evento.id).eventos.fechas = data.data
+        dispatch({
+          type: OBTENER_LISTA_EVENTOS_REALIZADOS,
+          payload: rex_lista_eventos_realizados
+        })
+      }
 
-        // Asistencias
-        if( rex_lista_eventos_realizados.length > 0 ){
-            rex_lista_eventos_realizados.find(evt => evt.eventos?.id == evento.id).eventos.fechas = data.data
-            dispatch({
-                type: OBTENER_LISTA_EVENTOS_REALIZADOS,
-                payload : rex_lista_eventos_realizados
-            })
-        }
-        
-    }).catch((error)=> {
-        console.log(error)
+    }).catch((error) => {
+      console.log(error)
     })
 
 }
 
 export const ObtenerAsistenciaEventoReducer = (evento, fecha_evento) => async (dispatch) => {
 
-    await fetch(config.api+'administrador/mostrar-asistencias-evento',
-        {
-            mode:'cors',
-            method: 'POST',
-            headers: {
-                'Accept' : 'application/json',
-                'Content-type' : 'application/json',
-                'usu_token'	   : localStorage.getItem("usutoken"),
-            },
-            body: JSON.stringify({
-                "req_evento" : evento,
-                "req_fecha_evento" : fecha_evento
-            }),
-        }
-    )
-    .then( async res => {return res.json()})
+  await fetch(config.api + 'administrador/mostrar-asistencias-evento',
+    {
+      mode: 'cors',
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+        'usu_token': localStorage.getItem("usutoken"),
+      },
+      body: JSON.stringify({
+        "req_evento": evento,
+        "req_fecha_evento": fecha_evento
+      }),
+    }
+  )
+    .then(async res => { return res.json() })
     .then(data => {
 
-        dispatch({
-            type: OBTENER_ASISTENCIAS_EVENTO,
-            payload : data.data
-        })
-        
-    }).catch((error)=> {
-        console.log(error)
+      dispatch({
+        type: OBTENER_ASISTENCIAS_EVENTO,
+        payload: data.data
+      })
+
+    }).catch((error) => {
+      console.log(error)
     })
 
 }
 
 export const ObtenerPonentesEventosReducer = (evento) => async (dispatch, getState) => {
 
-    let rex_lista_gestion_eventos = getState().adminGestionEventos.rex_lista_gestion_eventos
+  let rex_lista_gestion_eventos = getState().adminGestionEventos.rex_lista_gestion_eventos
 
-    await fetch(config.api+'administrador/mostrar-ponentes-eventos',
-        {
-            mode:'cors',
-            method: 'POST',
-            headers: {
-                'Accept' : 'application/json',
-                'Content-type' : 'application/json',
-                'usu_token'	   : localStorage.getItem("usutoken"),
-            },
-            body: JSON.stringify({
-                "req_evento" : evento
-            }),
-        }
-    )
-    .then( async res => {return res.json()})
+  await fetch(config.api + 'administrador/mostrar-ponentes-eventos',
+    {
+      mode: 'cors',
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+        'usu_token': localStorage.getItem("usutoken"),
+      },
+      body: JSON.stringify({
+        "req_evento": evento
+      }),
+    }
+  )
+    .then(async res => { return res.json() })
     .then(data => {
 
-        dispatch({
-            type: OBTENER_PONENTES_EVENTOS,
-            payload : data.data
-        })
+      dispatch({
+        type: OBTENER_PONENTES_EVENTOS,
+        payload: data.data
+      })
 
-        rex_lista_gestion_eventos.find(evt => evt.id == evento.id).ponentes = data.data
+      rex_lista_gestion_eventos.find(evt => evt.id == evento.id).ponentes = data.data
 
-        dispatch({
-            type: OBTENER_LISTA_GESTION_EVENTOS,
-            payload : rex_lista_gestion_eventos
-        })
-        
-    }).catch((error)=> {
-        console.log(error)
+      dispatch({
+        type: OBTENER_LISTA_GESTION_EVENTOS,
+        payload: rex_lista_gestion_eventos
+      })
+
+    }).catch((error) => {
+      console.log(error)
     })
 
 }
 
 export const ObtenerListaPonentesEventosReducer = () => async (dispatch) => {
 
-    await fetch(config.api+'administrador/mostrar-lista-ponentes',
-        {
-            mode:'cors',
-            method: 'POST',
-            headers: {
-                'Accept' : 'application/json',
-                'Content-type' : 'application/json',
-                'usu_token'	   : localStorage.getItem("usutoken"),
-            },
-            body: JSON.stringify({
-                
-            }),
-        }
-    )
-    .then( async res => {return res.json()})
+  await fetch(config.api + 'administrador/mostrar-lista-ponentes',
+    {
+      mode: 'cors',
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+        'usu_token': localStorage.getItem("usutoken"),
+      },
+      body: JSON.stringify({
+
+      }),
+    }
+  )
+    .then(async res => { return res.json() })
     .then(data => {
 
-        dispatch({
-            type: OBTENER_LISTA_PONENTES_EVENTOS,
-            payload : data.data
-        })
-        
-    }).catch((error)=> {
-        console.log(error)
+      dispatch({
+        type: OBTENER_LISTA_PONENTES_EVENTOS,
+        payload: data.data
+      })
+
+    }).catch((error) => {
+      console.log(error)
+    })
+
+}
+
+export const ObtenerInscritosEventosReducer = (evento) => async (dispatch, getState) => {
+
+  let rex_lista_gestion_eventos = getState().adminGestionEventos.rex_lista_gestion_eventos
+
+  await fetch(config.api + 'administrador/mostrar-inscritos-eventos',
+    {
+      mode: 'cors',
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-type': 'application/json',
+        'usu_token': localStorage.getItem("usutoken"),
+      },
+      body: JSON.stringify({
+        "req_evento": evento
+      }),
+    }
+  )
+    .then(async res => { return res.json() })
+    .then(data => {
+
+      dispatch({
+        type: OBTENER_PONENTES_EVENTOS,
+        payload: data.data
+      })
+
+      rex_lista_gestion_eventos.find(evt => evt.id == evento.id).ponentes = data.data
+
+      dispatch({
+        type: OBTENER_LISTA_GESTION_EVENTOS,
+        payload: rex_lista_gestion_eventos
+      })
+
+    }).catch((error) => {
+      console.log(error)
     })
 
 }

@@ -16,6 +16,7 @@ import {
     ObtenerAsistenciaEventoReducer
 } from '../../Redux/Actions/Administrador/GestionEventos'
 import { UsergroupAddOutlined } from '@ant-design/icons';
+import '../../Styles/ModalCrearEvento.css'
 
 const ModalEstudiantes = (props) => {
 
@@ -118,7 +119,7 @@ const ModalEstudiantes = (props) => {
             onClose={()=>{
                 setMostrarModal(!mostrarModal)
             }}
-            size={"xl"}
+            size={""}
         >
             <ModalOverlay />
             <ModalContent>

@@ -63,7 +63,7 @@ export const DescargarPlantillaListaUsuariosReducer = (idevento) => async (dispa
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'miArchivo.xlsx'; // Nombre del archivo
+        a.download = 'Lista de Inscritos.xlsx'; // Nombre del archivo
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);

@@ -141,7 +141,7 @@ const ModalTablaHorarios = (props) => {
             <ModalHeader>Registros Horarios</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-                <button onClick={() => console.log(eventoSeleccionado)}>clic</button>
+                {/* <button onClick={() => console.log(eventoSeleccionado)}>clic</button> */}
                 <Table 
                     columns={
                         columns

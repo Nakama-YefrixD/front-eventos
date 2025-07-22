@@ -1,22 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import {
-  Modal,
-  ModalContent,
-  ModalOverlay,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  Button,
-  ModalFooter,
-  useColorModeValue
-} from '@chakra-ui/react';
-import { useSelector, useDispatch } from 'react-redux'
-import { Space, Table, Tag } from 'antd';
-import {
-  ObtenerPonentesEventosReducer
-} from '../../Redux/Actions/Administrador/GestionEventos'
+import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@chakra-ui/react'
+import { Button, Table } from 'antd'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { ObtenerInscritosEventosReducer } from 'Redux/Actions/Administrador/GestionEventos'
 
-const ModalTablaPonentes = (props) => {
+const ModalTablaInscritos = (props) => {
 
   const dispatch = useDispatch()
   const {
@@ -27,17 +15,13 @@ const ModalTablaPonentes = (props) => {
   const setMostrarModal = props.setMostrarModal
   const eventoSeleccionado = props.eventoSeleccionado
 
-  const brandColor = useColorModeValue('brand.500', 'white');
+  const [loadingGuardar, setLoadingGuardar] = useState(false)
 
   useEffect(() => {
     if (!eventoSeleccionado.ponentes) {
-      dispatch(ObtenerPonentesEventosReducer(eventoSeleccionado))
+      dispatch(ObtenerInscritosEventosReducer(eventoSeleccionado))
     }
   }, [])
-
-  // INPUTS PARA ENVIAR
-
-  const [loadingGuardar, setLoadingGuardar] = useState(false)
 
   const columns = [
     {
@@ -63,7 +47,7 @@ const ModalTablaPonentes = (props) => {
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Registros Ponentes</ModalHeader>
+        <ModalHeader>Estudiantes Inscritos</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
 
@@ -97,7 +81,6 @@ const ModalTablaPonentes = (props) => {
       </ModalContent>
     </Modal>
   )
-
 }
 
-export default ModalTablaPonentes
+export default ModalTablaInscritos
